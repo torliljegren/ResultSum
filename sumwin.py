@@ -23,7 +23,7 @@ import focused
 
 class SumWin(object):
     def __init__(self, testtitles: tuple[str] = ('Prov 1', 'Prov 2', 'NP'), students: tuple[st.Student] = None,
-                 root = None, filepath=None, master=None, group: str='', course: str=''):
+                 root=None, filepath=None, master=None, group: str = '', course: str = ''):
         if root:
             self.win = root
         else:
@@ -38,8 +38,8 @@ class SumWin(object):
         else:
             self.filepath = ""
 
-        self.group:str = group
-        self.course:str = course
+        self.group: str = group
+        self.course: str = course
 
         self.win.wm_protocol('WM_DELETE_WINDOW', self.on_close)
         s = ttk.Style()
@@ -49,22 +49,24 @@ class SumWin(object):
         if platform.system() == 'Linux':
             s.theme_use('clam')
             s.configure('Content.TFrame', background='white')
-            s.configure('Content.TLabel', background='white', font=(None,10,'bold'))
-            s.configure('TestHeading.TLabel', background='white', font=(None,12,'bold'))
+            s.configure('Content.TLabel', background='white', font=(None, 10, 'bold'))
+            s.configure('TestHeading.TLabel', background='white', font=(None, 12, 'bold'))
         elif platform.system() == 'Windows':
             s.configure('Content.TFrame', background='white')
-            s.configure('Content.TLabel', background='white', font=(None,10,'bold'))
-            s.configure('TestHeading.TLabel', background='white', font=(None,12,'bold'))
+            s.configure('Content.TLabel', background='white', font=(None, 10, 'bold'))
+            s.configure('TestHeading.TLabel', background='white', font=(None, 12, 'bold'))
         else:
-            s.configure('Content.TLabel', font=(None,14,'bold'))
-            s.configure('TestHeading.TLabel', background='white', font=(None,15,'bold'))
+            s.configure('Content.TLabel', font=(None, 14, 'bold'))
+            s.configure('TestHeading.TLabel', background='white', font=(None, 15, 'bold'))
             s.configure('Grade.TEntry', font=(None, 12, 'bold'), background='linen')
+            s.configure('EditedGrade.TEntry', font=(None, 12, 'bold'), background='light goldenrod')
 
-        self.students = list(students) if students is not None else [st.Student('Elev 1', None), st.Student('Elev 2', None)]
+        self.students = list(students) if students is not None else [st.Student('Elev 1', None),
+                                                                     st.Student('Elev 2', None)]
 
-        btnpad_x = (0,5)
+        btnpad_x = (0, 5)
         btnpad_y = 5
-        self.topframe = ttk.Frame(self.win)# style='ButtonFrame.TFrame')
+        self.topframe = ttk.Frame(self.win)  # style='ButtonFrame.TFrame')
         self.topframe['relief'] = 'ridge'
         self.topframe['borderwidth'] = '2'
         self.topframe.grid(row=0, column=0, pady=0, padx=0, sticky=tk.EW)
@@ -94,11 +96,12 @@ class SumWin(object):
         self.dcolbutton = ttk.Button(master=self.topframe, command=self.removetest, image=self.dcolimg)
         self.dcolbutton.grid(row=0, column=7, padx=btnpad_x, pady=btnpad_y)
         self.upimage = tk.PhotoImage(file='up.png', master=self.win)
-        self.upbutton = ttk.Button(master=self.topframe, command=lambda: self.moveup(self.win.focus_get()), image=self.upimage)
+        self.upbutton = ttk.Button(master=self.topframe, command=lambda: self.moveup(self.win.focus_get()),
+                                   image=self.upimage)
         self.upbutton.grid(row=0, column=8, padx=btnpad_x, pady=btnpad_y)
         self.downimage = tk.PhotoImage(file='down.png', master=self.win)
         self.downbutton = ttk.Button(master=self.topframe, command=lambda: self.movedown(self.win.focus_get()),
-                                   image=self.downimage)
+                                     image=self.downimage)
         self.downbutton.grid(row=0, column=9, padx=btnpad_x, pady=btnpad_y)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
@@ -115,22 +118,26 @@ class SumWin(object):
         # grid the test titles
         testnr = 0
         for hlabel in self.headingslabels:
-            hlabel.grid(row=0, column=1+testnr*5, columnspan=5, sticky=tk.W, padx=(10, 0), pady=(15,0))
+            hlabel.grid(row=0, column=1 + testnr * 5, columnspan=5, sticky=tk.W, padx=(10, 0), pady=(15, 0))
             testnr += 1
 
         testnr = 0
         for infh in self.infoheadings:
-            infh.grid(row=1, startcol=1+testnr*5)
-            print(f'sumwin.__init__(): grid infoheading for test {testnr} at column {1+testnr*5} to {1+testnr*5+4}')
+            infh.grid(row=1, startcol=1 + testnr * 5)
+            print(f'sumwin.__init__(): grid infoheading for test {testnr} at column {1 + testnr * 5} to'
+                  f' {1 + testnr * 5 + 4}')
             testnr += 1
 
-        print(f'sumwin.__init__(): grid percentage headings at column {len(testtitles)*5+1}')
+        print(f'sumwin.__init__(): grid percentage headings at column {len(testtitles) * 5 + 1}')
 
-        ttk.Label(master=self.contentframe, text='%E', style='Content.TLabel').grid(row=1, column=len(testtitles)*5+1)
-        ttk.Label(master=self.contentframe, text='%C', style='Content.TLabel').grid(row=1, column=len(testtitles)*5+2)
-        ttk.Label(master=self.contentframe, text='%A', style='Content.TLabel').grid(row=1, column=len(testtitles)*5+3)
-        ttk.Label(master=self.contentframe, text='%TOT', style='Content.TLabel').grid(row=1, column=len(testtitles)*5+4)
-
+        ttk.Label(master=self.contentframe, text='%E', style='Content.TLabel').grid(row=1,
+                                                                                    column=len(testtitles) * 5 + 1)
+        ttk.Label(master=self.contentframe, text='%C', style='Content.TLabel').grid(row=1,
+                                                                                    column=len(testtitles) * 5 + 2)
+        ttk.Label(master=self.contentframe, text='%A', style='Content.TLabel').grid(row=1,
+                                                                                    column=len(testtitles) * 5 + 3)
+        ttk.Label(master=self.contentframe, text='%TOT', style='Content.TLabel').grid(row=1,
+                                                                                      column=len(testtitles) * 5 + 4)
 
         # fill the list of students
         self.student_rows = []
@@ -153,7 +160,6 @@ class SumWin(object):
 
         self.win.title(self.generate_window_title())
 
-
     def generate_window_title(self) -> str:
         # name = str()
         if not self.filepath:
@@ -167,10 +173,8 @@ class SumWin(object):
 
         return f'{self.course} ({self.group}) | {name}' if self.course and self.group else name
 
-
     def update_window_title(self):
         self.win.title(self.generate_window_title())
-
 
     def heading_click_callback(self, e, widget):
         # find out which test was clicked
@@ -197,8 +201,7 @@ class SumWin(object):
             else:
                 pass
 
-
-    def update_tests(self, index, tst:test.Test):
+    def update_tests(self, index, tst: test.Test):
         for sturow in self.student_rows:
             test_entry = sturow.test_entries[index]
             if test_entry.test.standard:
@@ -209,20 +212,17 @@ class SumWin(object):
                 test_entry.test.max = tst.max
                 test_entry.update_grade()
 
-
     def cmd_open(self):
-        fpath = tkinter.filedialog.askopenfilename(defaultextension='dat', filetypes=(('Bedömningsfil','*.dat'),),
+        fpath = tkinter.filedialog.askopenfilename(defaultextension='dat', filetypes=(('Bedömningsfil', '*.dat'),),
                                                    parent=self.win)
         if fpath:
             self.load_session(win=tk.Toplevel(master=self.master), master=self.master, filepath=fpath)
-
 
     def cmd_save(self):
         if self.filepath:
             self.save_session(self.filepath)
         else:
             self.cmd_saveas()
-
 
     def cmd_saveas(self):
         fpath = tkinter.filedialog.asksaveasfilename(defaultextension='dat', filetypes=(('Bedömningsfil', '*.dat'),),
@@ -244,14 +244,14 @@ class SumWin(object):
         row, testnr, kind = self.focused_index(w)
         print(f'Up pressed on row {row}, test nr {testnr}, of kind {kind}')
 
-        if kind == -1:         # nameentry is focused
-            self.student_rows[row-2].nameentry.focus_set()
-        elif kind == 0:        # Eentry is focused
-            self.student_rows[row-2].test_entries[testnr].Eentry.focus_set()
-        elif kind == 1:        # Centry is focused
-            self.student_rows[row-2].test_entries[testnr].Centry.focus_set()
-        elif kind == 2:        # Aentry is focused
-            self.student_rows[row-2].test_entries[testnr].Aentry.focus_set()
+        if kind == -1:  # nameentry is focused
+            self.student_rows[row - 2].nameentry.focus_set()
+        elif kind == 0:  # Eentry is focused
+            self.student_rows[row - 2].test_entries[testnr].Eentry.focus_set()
+        elif kind == 1:  # Centry is focused
+            self.student_rows[row - 2].test_entries[testnr].Centry.focus_set()
+        elif kind == 2:  # Aentry is focused
+            self.student_rows[row - 2].test_entries[testnr].Aentry.focus_set()
 
     # int row is 1-indexed
     def down_keypress(self, w):
@@ -260,15 +260,14 @@ class SumWin(object):
         row, testnr, kind = self.focused_index(w)
         print(f'Up pressed on row {row}, test nr {testnr}, of kind {kind}')
 
-        if kind == -1:         # nameentry is focused
+        if kind == -1:  # nameentry is focused
             self.student_rows[row].nameentry.focus_set()
-        elif kind == 0:        # Eentry is focused
+        elif kind == 0:  # Eentry is focused
             self.student_rows[row].test_entries[testnr].Eentry.focus_set()
-        elif kind == 1:        # Centry is focused
+        elif kind == 1:  # Centry is focused
             self.student_rows[row].test_entries[testnr].Centry.focus_set()
-        elif kind == 2:        # Aentry is focused
+        elif kind == 2:  # Aentry is focused
             self.student_rows[row].test_entries[testnr].Aentry.focus_set()
-
 
     def return_keypress(self, w):
         w.widget.icursor(tk.END)
@@ -284,9 +283,9 @@ class SumWin(object):
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
         if kind == -1:
-            self.student_rows[row-2].nameentry.focus_set()
+            self.student_rows[row - 2].nameentry.focus_set()
         else:
-            self.student_rows[row-2].test_entries[testnr].Eentry.focus_set()
+            self.student_rows[row - 2].test_entries[testnr].Eentry.focus_set()
 
     # the triggering widget w.widget is searched for returned is a tuple of
     # (row, test number (col), kind (E=0 C=1 A=2))
@@ -301,13 +300,13 @@ class SumWin(object):
                 testnr = 0
                 for entry in row.test_entries:
                     if entry.Eentry is w.widget or str(entry.Eentry) == str(w):
-                        print('focused row:', row.row-1, row.nameentry.get())
+                        print('focused row:', row.row - 1, row.nameentry.get())
                         return row.row - 1, testnr, 0
                     elif entry.Centry is w.widget or str(entry.Centry) == str(w):
-                        print('focused row:', row.row-1, row.nameentry.get())
+                        print('focused row:', row.row - 1, row.nameentry.get())
                         return row.row - 1, testnr, 1
                     elif entry.Aentry is w.widget or str(entry.Aentry) == str(w):
-                        print('focused row:', row.row-1, row.nameentry.get())
+                        print('focused row:', row.row - 1, row.nameentry.get())
                         return row.row - 1, testnr, 2
                     testnr += 1
         return -1, -1, -1
@@ -323,13 +322,13 @@ class SumWin(object):
                 testnr = 0
                 for entry in row.test_entries:
                     if str(entry.Eentry) == str(n):
-                        print('focused row:', row.row-1, row.nameentry.get())
+                        print('focused row:', row.row - 1, row.nameentry.get())
                         return row.row - 1, testnr, 0
                     elif str(entry.Centry) == str(n):
-                        print('focused row:', row.row-1, row.nameentry.get())
+                        print('focused row:', row.row - 1, row.nameentry.get())
                         return row.row - 1, testnr, 1
                     elif str(entry.Aentry) == str(n):
-                        print('focused row:', row.row-1, row.nameentry.get())
+                        print('focused row:', row.row - 1, row.nameentry.get())
                         return row.row - 1, testnr, 2
                     testnr += 1
         return -1, -1, -1
@@ -345,8 +344,9 @@ class SumWin(object):
             else:
                 row += 1
 
-        print(f'clicked index {row+1} with name {name}')
-        editwin = estw.EditStudentTestsWin(self.win, tuple([ste.test for ste in self.student_rows[row].test_entries]),
+        print(f'clicked index {row + 1} with name {name}')
+        editwin = estw.EditStudentTestsWin(self.win,
+                                           tuple([stest.test for stest in self.student_rows[row].test_entries]),
                                            self.find_standard_tests(), name)
         self.win.wait_window(editwin.win)
         print(f'editwin: {editwin.pressed} pressed')
@@ -364,7 +364,7 @@ class SumWin(object):
         i = 0
         for testentry in self.student_rows[row].test_entries:
             testentry.test = editwin.tests[i]
-            print(f'{name}s new grade template on test {i+1}: {testentry.test.gradetemplate}')
+            print(f'{name}s new grade template on test {i + 1}: {testentry.test.gradetemplate}')
             testentry.update_grade()
             if not testentry.test.standard:
                 testentry.gradeentry.config(style='EditedGrade.TEntry')
@@ -372,7 +372,7 @@ class SumWin(object):
                 testentry.gradeentry.config(style='Grade.TEntry')
             i += 1
 
-    def find_standard_tests(self)-> tuple[test.Test]:
+    def find_standard_tests(self) -> tuple[test.Test]:
         st_tests = list()
         taken_tests = list()
         test_index = 0
@@ -384,8 +384,7 @@ class SumWin(object):
                     test_index += 1
             if len(st_tests) == len(self.student_rows[0].test_entries):
                 break
-        return st_tests
-
+        return tuple(st_tests)
 
     def moveup(self, w):
         print(focused.FOCUSED, 'was in focus')
@@ -410,10 +409,10 @@ class SumWin(object):
                         index = row.row
                         break
         if index == -1:
-            return #     current    above
-        self.swap_entries(index-2, index-3)
+            return  # current    above
+        self.swap_entries(index - 2, index - 3)
         row, _, __ = self.focused_index_from_widget_name(focused.FOCUSED)
-        self.student_rows[row-2].nameentry.focus_set()
+        self.student_rows[row - 2].nameentry.focus_set()
 
     def movedown(self, w):
         print(focused.FOCUSED, 'was in focus')
@@ -441,10 +440,9 @@ class SumWin(object):
             return
         elif index - 2 == len(self.student_rows) - 1:
             return
-        self.swap_entries(index-2, index-1)
+        self.swap_entries(index - 2, index - 1)
         row, _, __ = self.focused_index_from_widget_name(focused.FOCUSED)
         self.student_rows[row].nameentry.focus_set()
-
 
     def swap_entries(self, index1, index2):
         entries1 = self.student_rows[index1].test_entries
@@ -466,7 +464,6 @@ class SumWin(object):
             entries1[i].sumvar.set(entries2[i].sumvar.get())
             entries1[i].gradevar.set(entries2[i].gradevar.get())
 
-
             entries2[i].Evar.set(tempE)
             entries2[i].Cvar.set(tempC)
             entries2[i].Avar.set(tempA)
@@ -479,21 +476,20 @@ class SumWin(object):
         self.student_rows[index1].update_model_from_gui()
         self.student_rows[index2].update_model_from_gui()
 
-
     def newtest(self):
         stus = self.students
-        tsts = [tst.title for tst in stus[0].tests]
-        tsts.append(f'Prov {len(tsts)+1}')
+        tsts: list[str] = [tst.title for tst in stus[0].tests]
+        tsts.append(f'Prov {len(tsts) + 1}')
         for stu in stus:
-            stu.tests.append(test.Test(title=tsts[-1], max=(1,1,1), result=(0,0,0),
-                                       grades=gradetemplate.GradeTemplate(1, (1,1), (1,1), (1,1), (1,1))))
+            stu.tests.append(test.Test(title=tsts[-1], max=(1, 1, 1), result=(0, 0, 0),
+                                       grades=gradetemplate.GradeTemplate(1, (1, 1), (1, 1), (1, 1), (1, 1))))
         s = SumWin(tuple(tsts), tuple(stus), master=self.master, root=tkinter.Toplevel(self.master), course=self.course,
                    group=self.group)
         self.win.destroy()
 
     def removetest(self):
         stus = self.students
-        tsts = [tst.title for tst in stus[0].tests][:-1]
+        tsts: list[str] = [tst.title for tst in stus[0].tests][:-1]
         for stu in stus:
             stu.tests = stu.tests[:-1]
         s = SumWin(tuple(tsts), tuple(stus), master=self.master,
@@ -503,13 +499,13 @@ class SumWin(object):
     def newstudent(self):
         stests = list()
         for tst in self.students[0].tests:
-            stests.append(test.Test(title=tst.title, max=tst.max, result=(0,0,0), grades=tst.gradetemplate))
-        self.students.append( st.Student(name='Ny elev', tests=stests) )
+            stests.append(test.Test(title=tst.title, max=tst.max, result=(0, 0, 0), grades=tst.gradetemplate))
+        self.students.append(st.Student(name='Ny elev', tests=tuple(stests)))
         # create a new student row with student entries
         entries = list()
         for tst in stests:
-            entries.append( ste.StudentTestEntry(self.contentframe, tst) )
-        newrow = sr.StudentRow(self.contentframe, len(self.student_rows)+2, self.students[-1], tuple(entries))
+            entries.append(ste.StudentTestEntry(self.contentframe, tst))
+        newrow = sr.StudentRow(self.contentframe, len(self.student_rows) + 2, self.students[-1], tuple(entries))
         newrow.bind_up_down(self)
         newrow.grid(row=newrow.row, startcolumn=0)
         self.student_rows.append(newrow)
@@ -518,7 +514,6 @@ class SumWin(object):
         self.student_rows[-1].grid_forget()
         self.student_rows[-1].destroy()
         self.student_rows = self.student_rows[:-1]
-
 
     def update_students(self):
         for row in self.student_rows:
@@ -530,10 +525,9 @@ class SumWin(object):
                 row.student.tests[index].result[2] = int(entry.Avar.get())
             index += 1
 
-
     def cmd_paste(self):
         r = tk.messagebox.askyesno('Klistra in namn?', 'Vill du klistra in namnen till klasslistan? De nuvarande namnen'
-                                                   'kommer att bytas ut.')
+                                                       'kommer att bytas ut.')
         if r == tk.NO:
             return
 
@@ -546,7 +540,6 @@ class SumWin(object):
         namelist_2.sort()
         for i in range(len(namelist_2)):
             self.student_rows[i].namevar.set(namelist_2[i])
-
 
     def save_session(self, fpath):
         self.update_students()
@@ -599,7 +592,7 @@ class SumWin(object):
             writer.writerow(('REDIGERADE MALLAR',))
             # write the non standard templates if there are any, else 0 to indicate no non standard templates
             if len(nonstandard) > 0:
-                for r,c in nonstandard:
+                for r, c in nonstandard:
                     tst = self.student_rows[r].test_entries[c].test
                     gtempl = tst.gradetemplate
                     #                0  1  2,3,4       5        6,7         8,9       10,11      12,13
@@ -625,7 +618,7 @@ class SumWin(object):
                 csv_rows.append(row)
 
         # find out the number of tests
-        ntests = -1 # the loop will count row 0 as well so -1 is the correct start
+        ntests = -1  # the loop will count row 0 as well so -1 is the correct start
         for row in csv_rows:
             if row[0] == 'STUDENTER':
                 break
@@ -636,7 +629,7 @@ class SumWin(object):
         # create the test info
         tests_data = list()
         print('load_session(): parsing tests')
-        for i in range(1, ntests+1):
+        for i in range(1, ntests + 1):
             row = csv_rows[i]
             test_data = dict()
             test_data['title'] = row[0]
@@ -654,7 +647,7 @@ class SumWin(object):
         # extract the student rows
         # the first student has index ntests+2
         print('load_session(): parsing students and results')
-        sturows = csv_rows[ntests+2:]
+        sturows = csv_rows[ntests + 2:]
 
         # create the student objects
         students: list[student.Student] = []
@@ -667,32 +660,35 @@ class SumWin(object):
             ttests: list[test.Test] = []
             for i in range(len(tests_data)):
                 testdata = tests_data[i]
-                ttests.append( test.Test( title=testdata['title'], max=(int(testdata['maxe']),int(testdata['maxc']),int(testdata['maxa'])),
-                                          result=(int(sturow[3*i+1]),int(sturow[3*i+2]),int(sturow[3*i+3])), grades=testdata['template'] ) )
-            students.append( student.Student(name=sturow[0], tests=tuple(ttests)) )
+                ttests.append(test.Test(title=testdata['title'],
+                                        max=(int(testdata['maxe']), int(testdata['maxc']), int(testdata['maxa'])),
+                                        result=(int(sturow[3 * i + 1]), int(sturow[3 * i + 2]), int(sturow[3 * i + 3])),
+                                        grades=testdata['template']))
+            students.append(student.Student(name=sturow[0], tests=tuple(ttests)))
             breakpnt += 1
         print('load_session(): parsing students and results done!')
 
         print('load_session(): processing edited grade templates')
         gradetemplate_data = []
 
-        for i in range(breakpnt+1, len(sturows)):
+        for i in range(breakpnt + 1, len(sturows)):
             if len(sturows[i]) == 1:
                 print('no edited grade templates found')
                 break
             else:
-                print(f'found {len(sturows[breakpnt+1:])} non standard grade templates')
-            print(f'parsing student #{int(sturows[i][0])} {students[ int(sturows[i][0]) ].name}, test {int(sturows[i][1])}')
+                print(f'found {len(sturows[breakpnt + 1:])} non standard grade templates')
+            print(
+                f'parsing student #{int(sturows[i][0])} {students[int(sturows[i][0])].name}, test {int(sturows[i][1])}')
             #  0    1    2    3      4                  5  6,7  8,9  10,11   12,13
             # row, col, maxE, maxC, maxA, GradeTemplate(E,  D,   C,    B,      A)
             #                                   row             col
             gradetemplate_data.append((int(sturows[i][0]), int(sturows[i][1]),
-                                       (int(sturows[i][2]), int(sturows[i][3]), int(sturows[i][4]) ), # max
-                                       gradetemplate.GradeTemplate(int(sturows[i][5]),                              # E
-                                                                   ( int(sturows[i][6]), int(sturows[i][7]) ),      # D
-                                                                   ( int(sturows[i][8]), int(sturows[i][9]) ),      # C
-                                                                   ( int(sturows[i][10]), int(sturows[i][11]) ),    # B
-                                                                   ( int(sturows[i][12]), int(sturows[i][13] )))))  # A
+                                       (int(sturows[i][2]), int(sturows[i][3]), int(sturows[i][4])),  # max
+                                       gradetemplate.GradeTemplate(int(sturows[i][5]),  # E
+                                                                   (int(sturows[i][6]), int(sturows[i][7])),  # D
+                                                                   (int(sturows[i][8]), int(sturows[i][9])),  # C
+                                                                   (int(sturows[i][10]), int(sturows[i][11])),  # B
+                                                                   (int(sturows[i][12]), int(sturows[i][13])))))  # A
 
         # modify the the students that should have a non standard grade template
         for data in gradetemplate_data:
@@ -727,7 +723,7 @@ class SumWin(object):
                         sumE += int(entry.Evar.get())
                         sumC += int(entry.Cvar.get())
                         sumA += int(entry.Avar.get())
-                        if sumE + sumC + sumA > 0: # only count the test if the student actually participated
+                        if sumE + sumC + sumA > 0:  # only count the test if the student actually participated
                             Etot += entry.test.max[0]
                             Ctot += entry.test.max[1]
                             Atot += entry.test.max[2]
@@ -737,22 +733,22 @@ class SumWin(object):
                 # print(f'calc_perc(): {sturow.namevar.get()} has Etot={Etot}, Ctot={Ctot}, Atot={Atot}')
                 if valid:
                     try:
-                        sturow.var_percentE.set(str(round(sumE/Etot*100))+'%')
+                        sturow.var_percentE.set(str(round(sumE / Etot * 100)) + '%')
                     except ZeroDivisionError:
                         sturow.var_percentE.set('?%')
 
                     try:
-                        sturow.var_percentC.set(str(round(sumC/Ctot*100))+'%')
+                        sturow.var_percentC.set(str(round(sumC / Ctot * 100)) + '%')
                     except ZeroDivisionError:
                         sturow.var_percentC.set('?%')
 
                     try:
-                        sturow.var_percentA.set(str(round(sumA/Atot*100))+'%')
+                        sturow.var_percentA.set(str(round(sumA / Atot * 100)) + '%')
                     except ZeroDivisionError:
                         sturow.var_percentA.set('?%')
 
                     try:
-                        sturow.var_percentTOT.set(str(round((sumE+sumC+sumA)/(Etot+Ctot+Atot)*100))+'%')
+                        sturow.var_percentTOT.set(str(round((sumE + sumC + sumA) / (Etot + Ctot + Atot) * 100)) + '%')
                     except ZeroDivisionError:
                         sturow.var_percentTOT.set('?%')
                 else:
