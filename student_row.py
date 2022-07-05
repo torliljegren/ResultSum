@@ -92,6 +92,9 @@ class StudentRow(object):
         self.entry_percentA.grid_forget()
         self.entry_percentTOT.grid()
 
+    def clear_entries(self):
+        self.namevar.set('')
+
 
     def destroy(self):
         self.nameentry.destroy()

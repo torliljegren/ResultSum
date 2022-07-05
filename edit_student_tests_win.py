@@ -15,6 +15,7 @@ class TestFrame(ttk.Frame):
     parent.waitWindow(etw)
     edited_test = etw.test
     """
+    # TODO: make every frame have a save and restore button, instead of the global ones
     def __init__(self, parent, test: t.Test, st_test: t.Test, title=None):
         super().__init__(master=parent, borderwidth=1)
         self.parent = parent

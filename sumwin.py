@@ -66,6 +66,7 @@ class SumWin(object):
 
         btnpad_x = (0, 5)
         btnpad_y = 5
+        ibtnpad_y = 0
         self.topframe = ttk.Frame(self.win)  # style='ButtonFrame.TFrame')
         self.topframe['relief'] = 'ridge'
         self.topframe['borderwidth'] = '2'
@@ -73,36 +74,40 @@ class SumWin(object):
         # self.topframe.pack(side='top', expand=True, pady=(0,10))
         self.saveimg = tk.PhotoImage(file='save.png', master=self.win)
         self.savebutton = ttk.Button(master=self.topframe, command=self.cmd_save, image=self.saveimg)
-        self.savebutton.grid(row=0, column=0, padx=5, pady=btnpad_y)
+        self.savebutton.grid(row=0, column=0, padx=5, pady=btnpad_y, ipady=ibtnpad_y)
         self.saveasimg = tk.PhotoImage(file='saveas.png', master=self.win)
         self.saveasbutton = ttk.Button(master=self.topframe, command=self.cmd_saveas, image=self.saveasimg)
-        self.saveasbutton.grid(row=0, column=1, padx=btnpad_x, pady=btnpad_y)
+        self.saveasbutton.grid(row=0, column=1, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.loadimg = tk.PhotoImage(file='open.png', master=self.win)
         self.loadbutton = ttk.Button(master=self.topframe, command=self.cmd_open, image=self.loadimg)
-        self.loadbutton.grid(row=0, column=2, padx=btnpad_x, pady=btnpad_y)
+        self.loadbutton.grid(row=0, column=2, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.pasteimg = tk.PhotoImage(file='paste.png', master=self.win)
         self.pastebutton = ttk.Button(master=self.topframe, command=self.cmd_paste, image=self.pasteimg)
-        self.pastebutton.grid(row=0, column=3, padx=btnpad_x, pady=btnpad_y)
+        self.pastebutton.grid(row=0, column=3, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.nrowimg = tk.PhotoImage(file='newstudent.png', master=self.win)
         self.nrowbutton = ttk.Button(master=self.topframe, command=self.newstudent, image=self.nrowimg)
-        self.nrowbutton.grid(row=0, column=4, padx=btnpad_x, pady=btnpad_y)
+        self.nrowbutton.grid(row=0, column=4, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.drowimg = tk.PhotoImage(file='deletestudent.png', master=self.win)
         self.drowbutton = ttk.Button(master=self.topframe, command=self.removestudent, image=self.drowimg)
-        self.drowbutton.grid(row=0, column=5, padx=btnpad_x, pady=btnpad_y)
+        self.drowbutton.grid(row=0, column=5, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.ncolimg = tk.PhotoImage(file='newtest.png', master=self.win)
         self.ncolbutton = ttk.Button(master=self.topframe, command=self.newtest, image=self.ncolimg)
-        self.ncolbutton.grid(row=0, column=6, padx=btnpad_x, pady=btnpad_y)
+        self.ncolbutton.grid(row=0, column=6, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.dcolimg = tk.PhotoImage(file='deletetest.png', master=self.win)
         self.dcolbutton = ttk.Button(master=self.topframe, command=self.removetest, image=self.dcolimg)
-        self.dcolbutton.grid(row=0, column=7, padx=btnpad_x, pady=btnpad_y)
+        self.dcolbutton.grid(row=0, column=7, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.upimage = tk.PhotoImage(file='up.png', master=self.win)
         self.upbutton = ttk.Button(master=self.topframe, command=lambda: self.moveup(self.win.focus_get()),
                                    image=self.upimage)
-        self.upbutton.grid(row=0, column=8, padx=btnpad_x, pady=btnpad_y)
+        self.upbutton.grid(row=0, column=8, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         self.downimage = tk.PhotoImage(file='down.png', master=self.win)
         self.downbutton = ttk.Button(master=self.topframe, command=lambda: self.movedown(self.win.focus_get()),
                                      image=self.downimage)
-        self.downbutton.grid(row=0, column=9, padx=btnpad_x, pady=btnpad_y)
+        self.downbutton.grid(row=0, column=9, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+
+        self.clrimage = tk.PhotoImage(file='clrentries.png', master=self.win)
+        self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage)
+        self.clrbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)
@@ -443,6 +448,9 @@ class SumWin(object):
         self.swap_entries(index - 2, index - 1)
         row, _, __ = self.focused_index_from_widget_name(focused.FOCUSED)
         self.student_rows[row].nameentry.focus_set()
+
+    def cmd_clear(self):
+        pass
 
     def swap_entries(self, index1, index2):
         entries1 = self.student_rows[index1].test_entries

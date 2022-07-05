@@ -93,6 +93,12 @@ class StudentTestEntry(object):
         self.gradevar.set(self.test.grade())
 
 
+    def clear_entries(self):
+        self.Evar.set('0')
+        self.Cvar.set('0')
+        self.Avar.set('0')
+
+
     def grid(self, row, startcol: int):
         self.Eentry.grid(row=row, column=startcol)
         self.Centry.grid(row=row, column=startcol + 1)
