@@ -106,7 +106,7 @@ class SumWin(object):
         self.downbutton.grid(row=0, column=9, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
         self.clrimage = tk.PhotoImage(file='clrentries.png', master=self.win)
-        self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage)
+        self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage, command=self.cmd_clear)
         self.clrbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
@@ -450,7 +450,8 @@ class SumWin(object):
         self.student_rows[row].nameentry.focus_set()
 
     def cmd_clear(self):
-        pass
+        for stu in self.student_rows:
+            stu.clear_entries()
 
     def swap_entries(self, index1, index2):
         entries1 = self.student_rows[index1].test_entries

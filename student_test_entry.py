@@ -39,7 +39,8 @@ class StudentTestEntry(object):
 
 
     def point_entry_callback(self, e=None, widget=None):
-        focused.FOCUSED = str(e.widget)
+        if e is not None:
+            focused.FOCUSED = str(e.widget)
         E = -1
         C = -1
         A = -1
@@ -97,6 +98,8 @@ class StudentTestEntry(object):
         self.Evar.set('0')
         self.Cvar.set('0')
         self.Avar.set('0')
+        self.point_entry_callback()
+        self.update_grade()
 
 
     def grid(self, row, startcol: int):

@@ -94,6 +94,8 @@ class StudentRow(object):
 
     def clear_entries(self):
         self.namevar.set('')
+        for entry in self.test_entries:
+            entry.clear_entries()
 
 
     def destroy(self):
