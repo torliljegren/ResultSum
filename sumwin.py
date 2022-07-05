@@ -105,9 +105,13 @@ class SumWin(object):
                                      image=self.downimage)
         self.downbutton.grid(row=0, column=9, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
+        self.clrallimage = tk.PhotoImage(file='clearall.png', master=self.win)
+        self.clrallbutton = ttk.Button(master=self.topframe, image=self.clrallimage, command=self.cmd_clearall)
+        self.clrallbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+
         self.clrimage = tk.PhotoImage(file='clrentries.png', master=self.win)
         self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage, command=self.cmd_clear)
-        self.clrbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        self.clrbutton.grid(row=0, column=11, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)
@@ -317,6 +321,11 @@ class SumWin(object):
         return -1, -1, -1
 
     def focused_index_from_widget_name(self, n):
+        """
+        Get the index of the focused row. Observe that the index is 1-indexed.
+        :param n: the name of the widget in Tk:s naming
+        :return: 1-indexed row number that is in focus
+        """
         # print(w.widget, 'is in focus')
         index = -1
         for row in self.student_rows:
@@ -449,9 +458,13 @@ class SumWin(object):
         row, _, __ = self.focused_index_from_widget_name(focused.FOCUSED)
         self.student_rows[row].nameentry.focus_set()
 
-    def cmd_clear(self):
+    def cmd_clearall(self):
         for stu in self.student_rows:
             stu.clear_entries()
+
+    def cmd_clear(self):
+        row, name, kind = self.focused_index_from_widget_name(focused.FOCUSED)
+        self.student_rows[row-1].clear_entries()
 
     def swap_entries(self, index1, index2):
         entries1 = self.student_rows[index1].test_entries
