@@ -567,7 +567,7 @@ class SumWin(object):
         self.update_students()
         with open(fpath, 'w') as savefile:
             writer = csv.writer(savefile, dialect='excel', lineterminator='\n')
-            writer.writerow(('PROVINFO',))
+            writer.writerow(('PROVINFO', self.course, self.group))
             # get the tests
             index = 0
             tests = []
@@ -638,6 +638,12 @@ class SumWin(object):
             csvreader = csv.reader(opened_file, dialect='excel')
             for row in csvreader:
                 csv_rows.append(row)
+
+        course = str()
+        group = str()
+        if len(csv_rows[0]) == 3:
+            course = csv_rows[0][1]
+            group = csv_rows[0][2]
 
         # find out the number of tests
         ntests = -1  # the loop will count row 0 as well so -1 is the correct start
@@ -726,7 +732,7 @@ class SumWin(object):
 
         # feed the students to a new SumWin
         SumWin(testtitles=tuple([tst['title'] for tst in tests_data]), students=tuple(students),
-               root=win, filepath=filepath, master=master)
+               root=win, filepath=filepath, master=master, course=course, group=group)
 
     def update_perc(self):
         while self.run_thread:
