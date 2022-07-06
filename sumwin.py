@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
+import focused
 import gradetemplate
 import student
 import student as st
@@ -19,7 +20,6 @@ import tkinter.filedialog
 import pyperclip
 import threading as t
 from time import sleep
-import focused
 
 
 class SumWin(object):
@@ -249,8 +249,8 @@ class SumWin(object):
     def cmd_info(self):
         dia = changeCourseGroupDialog.ChangeCourseGroupDialog(self.win, 'Ändra info')
         if dia.result is not None:
-            self.course = dia.result[0]
-            self.group = dia.result[1]
+            self.course = dia.result[0] if dia.result[0] != '' else self.course
+            self.group = dia.result[1] if dia.result[1] != '' else self.group
             self.update_window_title()
 
     def update_sums(self):
@@ -435,7 +435,7 @@ class SumWin(object):
                         index = row.row
                         break
         if index == -1:
-            return  # current    above
+            return        # current    above
         self.swap_entries(index - 2, index - 3)
         row, _, __ = self.focused_index_from_widget_name(focused.FOCUSED)
         self.student_rows[row - 2].nameentry.focus_set()
@@ -519,6 +519,8 @@ class SumWin(object):
                                        grades=gradetemplate.GradeTemplate(1, (1, 1), (1, 1), (1, 1), (1, 1))))
         s = SumWin(tuple(tsts), tuple(stus), master=self.master, root=tkinter.Toplevel(self.master), course=self.course,
                    group=self.group)
+        s.filepath = self.filepath
+        s.update_window_title()
         self.win.destroy()
 
     def removetest(self):
@@ -527,7 +529,9 @@ class SumWin(object):
         for stu in stus:
             stu.tests = stu.tests[:-1]
         s = SumWin(tuple(tsts), tuple(stus), master=self.master,
-                   root=tkinter.Toplevel(self.master))
+                   root=tkinter.Toplevel(self.master), group=self.group, course=self.course)
+        s.filepath = self.filepath
+        s.update_window_title()
         self.win.destroy()
 
     def newstudent(self):

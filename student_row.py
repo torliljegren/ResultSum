@@ -68,7 +68,7 @@ class StudentRow(object):
             entry.grid(row=row, startcol=entrycounter*5 + 1)
             entrycounter += 1
 
-        self.entry_percentE.grid(row=row, column=startcolumn+len(self.test_entries)*5+1)
+        self.entry_percentE.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 1)
         self.entry_percentC.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 2)
         self.entry_percentA.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 3)
         self.entry_percentTOT.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 4)
