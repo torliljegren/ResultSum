@@ -12,6 +12,7 @@ import edit_student_tests_win as estw
 import platform
 import testheading as th
 import edittestwin as etw
+import changeCourseGroupDialog
 import csv
 from tkinter.messagebox import showerror, showinfo
 import tkinter.filedialog
@@ -112,6 +113,10 @@ class SumWin(object):
         self.clrimage = tk.PhotoImage(file='clrentries.png', master=self.win)
         self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage, command=self.cmd_clear)
         self.clrbutton.grid(row=0, column=11, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+
+        self.infoimage = tk.PhotoImage(file='info.png', master=self.win)
+        self.infobutton = ttk.Button(master=self.topframe, image=self.infoimage, command=self.cmd_info)
+        self.infobutton.grid(row=0, column=12, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)
@@ -239,6 +244,13 @@ class SumWin(object):
         if fpath:
             self.filepath = fpath
             self.save_session(fpath)
+            self.update_window_title()
+
+    def cmd_info(self):
+        dia = changeCourseGroupDialog.ChangeCourseGroupDialog(self.win, 'Ändra info')
+        if dia.result is not None:
+            self.course = dia.result[0]
+            self.group = dia.result[1]
             self.update_window_title()
 
     def update_sums(self):
