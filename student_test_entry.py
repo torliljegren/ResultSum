@@ -93,6 +93,13 @@ class StudentTestEntry(object):
     def update_grade(self):
         self.gradevar.set(self.test.grade())
 
+    def results(self):
+        return self.Evar.get(), self.Cvar.get(), self.Avar.get()
+
+    def set_results(self, res: tuple[str,str,str]):
+        self.Evar.set(res[0])
+        self.Cvar.set(res[1])
+        self.Avar.set(res[2])
 
     def clear_entries(self):
         self.Evar.set('0')

@@ -10,7 +10,7 @@ class StudentRow(object):
         self.master = master
         self.row = row
         self.student = student
-        self.test_entries = test_entries
+        self.test_entries : list[ste.StudentTestEntry] = list(test_entries)
 
         self.namevar = StringVar(master, value=student.name)
         self.nameentry = Entry(master, textvariable=self.namevar)

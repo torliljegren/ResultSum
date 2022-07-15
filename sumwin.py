@@ -129,12 +129,12 @@ class SumWin(object):
 
         self.clrallimage = tk.PhotoImage(file='clearall.png', master=self.win)
         self.clrallbutton = ttk.Button(master=self.topframe, image=self.clrallimage, command=self.cmd_clearall)
-        self.clrallbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        self.clrallbutton.grid(row=0, column=11, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.clrallbutton, msg='Rensa alla elever och poäng', delay=0.7)
 
         self.clrimage = tk.PhotoImage(file='clrentries.png', master=self.win)
         self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage, command=self.cmd_clear)
-        self.clrbutton.grid(row=0, column=11, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        self.clrbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.clrbutton, msg='Rensa elevens poäng', delay=0.7)
 
         self.infoimage = tk.PhotoImage(file='info.png', master=self.win)
@@ -533,6 +533,23 @@ class SumWin(object):
             # entries2[i].test = temptest1
         self.student_rows[index1].update_model_from_gui()
         self.student_rows[index2].update_model_from_gui()
+
+    def swap_tests(self, index1, index2):
+        for row in self.student_rows:
+            # swap results
+            res1 = row.test_entries[index1].results()
+            template1 = row.test_entries[index1].test.gradetemplate
+            row.test_entries[index1].set_results( row.test_entries[index2].results() )
+            row.test_entries[index2].set_results(res1)
+
+            # swap tests
+            test1 = row.test_entries[index1].test
+            row.test_entries[index1].test = row.test_entries[index2].test
+            row.test_entries[index2].test = test1
+
+            row.update_model_from_gui()
+            row.update_model_from_gui()
+
 
     def newtest(self):
         stus = self.students
