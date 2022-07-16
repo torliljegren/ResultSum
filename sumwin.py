@@ -142,6 +142,16 @@ class SumWin(object):
         self.infobutton.grid(row=0, column=12, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
 
+        self.leftimage = tk.PhotoImage(file='left.png', master=self.win)
+        self.leftbutton = ttk.Button(master=self.topframe, image=self.leftimage, command=self.cmd_move_test_left)
+        self.leftbutton.grid(row=0, column=13, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+
+        self.rightimage = tk.PhotoImage(file='right.png', master=self.win)
+        self.rightbutton = ttk.Button(master=self.topframe, image=self.rightimage, command=self.cmd_move_test_right)
+        self.rightbutton.grid(row=0, column=14, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)
         self.contentframe.columnconfigure(0, weight=1)
@@ -276,6 +286,17 @@ class SumWin(object):
             self.course = dia.result[0] if dia.result[0] != '' else self.course
             self.group = dia.result[1] if dia.result[1] != '' else self.group
             self.update_window_title()
+
+    def cmd_move_test_left(self):
+        testnr = self.focused_index_from_widget_name(self.win.focus_get())[1]
+        print(f'testnr is {testnr}')
+        if testnr != 0 and testnr != -1:
+            self.swap_tests(testnr, testnr - 1)
+
+    def cmd_move_test_right(self):
+        testnr = self.focused_index_from_widget_name(self.win.focus_get())[1]
+        if testnr != len(self.student_rows[0].test_entries) - 1 and testnr != -1:
+            self.swap_tests(testnr, testnr + 1)
 
     def update_sums(self):
         for row in self.student_rows:
@@ -535,6 +556,12 @@ class SumWin(object):
         self.student_rows[index2].update_model_from_gui()
 
     def swap_tests(self, index1, index2):
+        print(f'attempring to swap test {index1} and {index2}')
+        # swap the titles
+        heading1 = self.headingsvars[index1].get()
+        self.headingsvars[index1].set(self.headingsvars[index2].get())
+        self.headingsvars[index2].set(heading1)
+
         for row in self.student_rows:
             # swap results
             res1 = row.test_entries[index1].results()
@@ -547,7 +574,6 @@ class SumWin(object):
             row.test_entries[index1].test = row.test_entries[index2].test
             row.test_entries[index2].test = test1
 
-            row.update_model_from_gui()
             row.update_model_from_gui()
 
 
