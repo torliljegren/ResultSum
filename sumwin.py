@@ -288,13 +288,13 @@ class SumWin(object):
             self.update_window_title()
 
     def cmd_move_test_left(self):
-        testnr = self.focused_index_from_widget_name(self.win.focus_get())[1]
+        testnr = self.focused_index_from_widget_name(focused.FOCUSED)[1]
         print(f'testnr is {testnr}')
         if testnr != 0 and testnr != -1:
             self.swap_tests(testnr, testnr - 1)
 
     def cmd_move_test_right(self):
-        testnr = self.focused_index_from_widget_name(self.win.focus_get())[1]
+        testnr = self.focused_index_from_widget_name(focused.FOCUSED)[1]
         if testnr != len(self.student_rows[0].test_entries) - 1 and testnr != -1:
             self.swap_tests(testnr, testnr + 1)
 
@@ -575,6 +575,7 @@ class SumWin(object):
             row.test_entries[index2].test = test1
 
             row.update_model_from_gui()
+            row.update_sums()
 
 
     def newtest(self):

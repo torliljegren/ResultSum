@@ -61,6 +61,10 @@ class StudentRow(object):
     def nameentry_callback(self, e):
         focused.FOCUSED = str(self.test_entries[0].Eentry)
 
+    def update_sums(self):
+        for entry in self.test_entries:
+            entry.update_sum()
+
     def grid(self, row: int, startcolumn: int):
         self.nameentry.grid(row=row, column=startcolumn)
         entrycounter = startcolumn
