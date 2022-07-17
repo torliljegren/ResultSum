@@ -565,7 +565,6 @@ class SumWin(object):
         for row in self.student_rows:
             # swap results
             res1 = row.test_entries[index1].results()
-            template1 = row.test_entries[index1].test.gradetemplate
             row.test_entries[index1].set_results( row.test_entries[index2].results() )
             row.test_entries[index2].set_results(res1)
 
@@ -575,7 +574,7 @@ class SumWin(object):
             row.test_entries[index2].test = test1
 
             row.update_model_from_gui()
-            row.update_sums()
+            row.update_grades_and_sums()
 
 
     def newtest(self):
