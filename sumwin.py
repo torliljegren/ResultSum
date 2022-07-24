@@ -258,7 +258,7 @@ class SumWin(object):
             for entry in row.test_entries:
                 entry.point_entry_callback()
 
-    # int row is 1-indexed
+    # row: int is 1-indexed
     def up_keypress(self, w):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
@@ -274,7 +274,7 @@ class SumWin(object):
         elif kind == 2:  # Aentry is focused
             self.student_rows[row - 2].test_entries[testnr].Aentry.focus_set()
 
-    # int row is 1-indexed
+    # row: int is 1-indexed
     def down_keypress(self, w):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
