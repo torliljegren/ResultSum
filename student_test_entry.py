@@ -86,13 +86,22 @@ class StudentTestEntry(object):
             valid = False
 
         if valid:
-            self.gradevar.set(self.test.grade())
-            self.sumvar.set(str(self.test.sum_result()))
-
+            self.update_grade()
+            self.update_sum()
 
     def update_grade(self):
         self.gradevar.set(self.test.grade())
 
+    def update_sum(self):
+        self.sumvar.set(str(self.test.sum_result()))
+
+    def results(self):
+        return self.Evar.get(), self.Cvar.get(), self.Avar.get()
+
+    def set_results(self, res: tuple[str,str,str]):
+        self.Evar.set(res[0])
+        self.Cvar.set(res[1])
+        self.Avar.set(res[2])
 
     def clear_entries(self):
         self.Evar.set('0')

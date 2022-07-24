@@ -18,6 +18,7 @@ import csv
 from tkinter.messagebox import showerror, showinfo
 import tkinter.filedialog
 import pyperclip
+from tktooltip import ToolTip
 import threading as t
 from time import sleep
 
@@ -72,51 +73,84 @@ class SumWin(object):
         self.topframe['relief'] = 'ridge'
         self.topframe['borderwidth'] = '2'
         self.topframe.grid(row=0, column=0, pady=0, padx=0, sticky=tk.EW)
+
         # self.topframe.pack(side='top', expand=True, pady=(0,10))
         self.saveimg = tk.PhotoImage(file='save.png', master=self.win)
         self.savebutton = ttk.Button(master=self.topframe, command=self.cmd_save, image=self.saveimg)
         self.savebutton.grid(row=0, column=0, padx=5, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.savebutton, msg='Spara', delay=0.7)
+
         self.saveasimg = tk.PhotoImage(file='saveas.png', master=self.win)
         self.saveasbutton = ttk.Button(master=self.topframe, command=self.cmd_saveas, image=self.saveasimg)
         self.saveasbutton.grid(row=0, column=1, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.saveasbutton, msg='Spara som', delay=0.7)
+
         self.loadimg = tk.PhotoImage(file='open.png', master=self.win)
         self.loadbutton = ttk.Button(master=self.topframe, command=self.cmd_open, image=self.loadimg)
         self.loadbutton.grid(row=0, column=2, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.loadbutton, msg='Öppna', delay=0.7)
+
         self.pasteimg = tk.PhotoImage(file='paste.png', master=self.win)
         self.pastebutton = ttk.Button(master=self.topframe, command=self.cmd_paste, image=self.pasteimg)
         self.pastebutton.grid(row=0, column=3, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.pastebutton, msg='Klistra in till klasslistan', delay=0.7)
+
         self.nrowimg = tk.PhotoImage(file='newstudent.png', master=self.win)
         self.nrowbutton = ttk.Button(master=self.topframe, command=self.newstudent, image=self.nrowimg)
         self.nrowbutton.grid(row=0, column=4, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.nrowbutton, msg='Lägg till elevrad', delay=0.7)
+
         self.drowimg = tk.PhotoImage(file='deletestudent.png', master=self.win)
         self.drowbutton = ttk.Button(master=self.topframe, command=self.removestudent, image=self.drowimg)
         self.drowbutton.grid(row=0, column=5, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.drowbutton, msg='Ta bort understa elevraden', delay=0.7)
+
         self.ncolimg = tk.PhotoImage(file='newtest.png', master=self.win)
         self.ncolbutton = ttk.Button(master=self.topframe, command=self.newtest, image=self.ncolimg)
         self.ncolbutton.grid(row=0, column=6, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.ncolbutton, msg='Lägg till prov', delay=0.7)
+
         self.dcolimg = tk.PhotoImage(file='deletetest.png', master=self.win)
         self.dcolbutton = ttk.Button(master=self.topframe, command=self.removetest, image=self.dcolimg)
         self.dcolbutton.grid(row=0, column=7, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.dcolbutton, msg='Ta bort högersta provet', delay=0.7)
+
         self.upimage = tk.PhotoImage(file='up.png', master=self.win)
         self.upbutton = ttk.Button(master=self.topframe, command=lambda: self.moveup(self.win.focus_get()),
                                    image=self.upimage)
         self.upbutton.grid(row=0, column=8, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.upbutton, msg='Flytta upp elev', delay=0.7)
+
         self.downimage = tk.PhotoImage(file='down.png', master=self.win)
         self.downbutton = ttk.Button(master=self.topframe, command=lambda: self.movedown(self.win.focus_get()),
                                      image=self.downimage)
         self.downbutton.grid(row=0, column=9, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.downbutton, msg='Flytta ner elev', delay=0.7)
 
         self.clrallimage = tk.PhotoImage(file='clearall.png', master=self.win)
         self.clrallbutton = ttk.Button(master=self.topframe, image=self.clrallimage, command=self.cmd_clearall)
-        self.clrallbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        self.clrallbutton.grid(row=0, column=11, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.clrallbutton, msg='Rensa alla elever och poäng', delay=0.7)
 
         self.clrimage = tk.PhotoImage(file='clrentries.png', master=self.win)
         self.clrbutton = ttk.Button(master=self.topframe, image=self.clrimage, command=self.cmd_clear)
-        self.clrbutton.grid(row=0, column=11, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        self.clrbutton.grid(row=0, column=10, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.clrbutton, msg='Rensa elevens poäng', delay=0.7)
 
         self.infoimage = tk.PhotoImage(file='info.png', master=self.win)
         self.infobutton = ttk.Button(master=self.topframe, image=self.infoimage, command=self.cmd_info)
         self.infobutton.grid(row=0, column=12, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+
+        self.leftimage = tk.PhotoImage(file='left.png', master=self.win)
+        self.leftbutton = ttk.Button(master=self.topframe, image=self.leftimage, command=self.cmd_move_test_left)
+        self.leftbutton.grid(row=0, column=13, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+
+        self.rightimage = tk.PhotoImage(file='right.png', master=self.win)
+        self.rightbutton = ttk.Button(master=self.topframe, image=self.rightimage, command=self.cmd_move_test_right)
+        self.rightbutton.grid(row=0, column=14, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)
@@ -252,6 +286,17 @@ class SumWin(object):
             self.course = dia.result[0] if dia.result[0] != '' else self.course
             self.group = dia.result[1] if dia.result[1] != '' else self.group
             self.update_window_title()
+
+    def cmd_move_test_left(self):
+        testnr = self.focused_index_from_widget_name(focused.FOCUSED)[1]
+        print(f'testnr is {testnr}')
+        if testnr != 0 and testnr != -1:
+            self.swap_tests(testnr, testnr - 1)
+
+    def cmd_move_test_right(self):
+        testnr = self.focused_index_from_widget_name(focused.FOCUSED)[1]
+        if testnr != len(self.student_rows[0].test_entries) - 1 and testnr != -1:
+            self.swap_tests(testnr, testnr + 1)
 
     def update_sums(self):
         for row in self.student_rows:
@@ -509,6 +554,28 @@ class SumWin(object):
             # entries2[i].test = temptest1
         self.student_rows[index1].update_model_from_gui()
         self.student_rows[index2].update_model_from_gui()
+
+    def swap_tests(self, index1, index2):
+        print(f'attempring to swap test {index1} and {index2}')
+        # swap the titles
+        heading1 = self.headingsvars[index1].get()
+        self.headingsvars[index1].set(self.headingsvars[index2].get())
+        self.headingsvars[index2].set(heading1)
+
+        for row in self.student_rows:
+            # swap results
+            res1 = row.test_entries[index1].results()
+            row.test_entries[index1].set_results( row.test_entries[index2].results() )
+            row.test_entries[index2].set_results(res1)
+
+            # swap tests
+            test1 = row.test_entries[index1].test
+            row.test_entries[index1].test = row.test_entries[index2].test
+            row.test_entries[index2].test = test1
+
+            row.update_model_from_gui()
+            row.update_grades_and_sums()
+
 
     def newtest(self):
         stus = self.students

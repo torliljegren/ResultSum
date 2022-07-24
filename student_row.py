@@ -10,7 +10,7 @@ class StudentRow(object):
         self.master = master
         self.row = row
         self.student = student
-        self.test_entries = test_entries
+        self.test_entries : list[ste.StudentTestEntry] = list(test_entries)
 
         self.namevar = StringVar(master, value=student.name)
         self.nameentry = Entry(master, textvariable=self.namevar)
@@ -61,6 +61,19 @@ class StudentRow(object):
     def nameentry_callback(self, e):
         focused.FOCUSED = str(self.test_entries[0].Eentry)
 
+    def update_sums(self):
+        for entry in self.test_entries:
+            entry.update_sum()
+
+    def update_grades(self):
+        for entry in self.test_entries:
+            entry.update_grade()
+
+    def update_grades_and_sums(self):
+        for entry in self.test_entries:
+            entry.update_sum()
+            entry.update_grade()
+
     def grid(self, row: int, startcolumn: int):
         self.nameentry.grid(row=row, column=startcolumn)
         entrycounter = startcolumn
@@ -77,10 +90,13 @@ class StudentRow(object):
 
     def update_model_from_gui(self):
         self.student.name = self.namevar.get()
+        testindex = 0
         for entry in self.test_entries:
             entry.test.result[0] = int(entry.Evar.get())
             entry.test.result[1] = int(entry.Cvar.get())
             entry.test.result[2] = int(entry.Avar.get())
+            self.student.tests[testindex] = entry.test
+            testindex += 1
 
 
     def grid_forget(self):
