@@ -308,7 +308,7 @@ class SumWin(object):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
-        print(f'Up pressed on row {row}, test nr {testnr}, of kind {kind}')
+        # print(f'Up pressed on row {row}, test nr {testnr}, of kind {kind}')
         if row == 1:
             return
 
@@ -326,7 +326,7 @@ class SumWin(object):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
-        print(f'Down pressed on row {row}, test nr {testnr}, of kind {kind}')
+        # print(f'Down pressed on row {row}, test nr {testnr}, of kind {kind}')
         if row == len(self.student_rows):
             return
 
