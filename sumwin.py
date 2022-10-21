@@ -309,6 +309,8 @@ class SumWin(object):
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
         print(f'Up pressed on row {row}, test nr {testnr}, of kind {kind}')
+        if row == 1:
+            return
 
         if kind == -1:  # nameentry is focused
             self.student_rows[row - 2].nameentry.focus_set()
@@ -324,7 +326,9 @@ class SumWin(object):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
-        print(f'Up pressed on row {row}, test nr {testnr}, of kind {kind}')
+        print(f'Down pressed on row {row}, test nr {testnr}, of kind {kind}')
+        if row == len(self.student_rows):
+            return
 
         if kind == -1:  # nameentry is focused
             self.student_rows[row].nameentry.focus_set()
@@ -339,6 +343,10 @@ class SumWin(object):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
+
+        if row == len(self.student_rows):
+            return
+
         if kind == -1:
             self.student_rows[row].nameentry.focus_set()
         else:
@@ -348,6 +356,10 @@ class SumWin(object):
         w.widget.icursor(tk.END)
         w.widget.select_clear()
         row, testnr, kind = self.focused_index(w)
+
+        if row == 1:
+            return
+
         if kind == -1:
             self.student_rows[row - 2].nameentry.focus_set()
         else:
@@ -554,6 +566,8 @@ class SumWin(object):
             # entries2[i].test = temptest1
         self.student_rows[index1].update_model_from_gui()
         self.student_rows[index2].update_model_from_gui()
+
+        # self.update_students()
 
     def swap_tests(self, index1, index2):
         print(f'attempring to swap test {index1} and {index2}')
