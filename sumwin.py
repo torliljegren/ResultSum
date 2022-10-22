@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 import tkinter.ttk as ttk
 
@@ -263,8 +264,16 @@ class SumWin(object):
     def cmd_open(self):
         fpath = tkinter.filedialog.askopenfilename(defaultextension='dat', filetypes=(('Bedömningsfil', '*.dat'),),
                                                    parent=self.win)
+        result = 0
+        swin = tk.Toplevel(master=self.master)
         if fpath:
-            self.load_session(win=tk.Toplevel(master=self.master), master=self.master, filepath=fpath)
+            result = self.load_session(win=swin, master=self.master, filepath=fpath)
+
+        # if opening file failed
+        if result == -1:
+            swin.destroy()
+            self.master.deiconify()
+            self.master.focus_set()
 
     def cmd_save(self):
         if self.filepath:
@@ -728,7 +737,7 @@ class SumWin(object):
     # STUDENTER
     # [STUDENT NAME], [E POINTS ON TEST 1], [C POINTS ON TEST 1], [A POINTS ON TEST 1],...,[E POINTS ON TEST N],...
     @staticmethod
-    def load_session(win, master, filepath: str = 'test.dat'):
+    def load_session(win, master, filepath: str = 'test.dat') -> int:
         # read the lines of the csv
         csv_rows = []
         with open(filepath, 'r') as opened_file:
@@ -738,6 +747,15 @@ class SumWin(object):
 
         course = str()
         group = str()
+
+        # rudementary check if opened file is valid
+        if len(csv_rows[0]) == 0:
+            showerror('Filfel', 'Filen saknar innehåll.')
+            return -1
+        elif 'PROVINFO' not in csv_rows[0]:
+            showerror('Filfel', 'Filen innehåller inte förväntad data.\n Är det verkligen en resultatfil?')
+            return -1
+
         if len(csv_rows[0]) == 3:
             course = csv_rows[0][1]
             group = csv_rows[0][2]
@@ -830,6 +848,7 @@ class SumWin(object):
         # feed the students to a new SumWin
         SumWin(testtitles=tuple([tst['title'] for tst in tests_data]), students=tuple(students),
                root=win, filepath=filepath, master=master, course=course, group=group)
+        return 0
 
     def update_perc(self):
         while self.run_thread:
