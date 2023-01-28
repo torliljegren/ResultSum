@@ -360,6 +360,8 @@ class SumWin(object):
             self.student_rows[row].nameentry.focus_set()
         else:
             self.student_rows[row].test_entries[testnr].Eentry.focus_set()
+            self.student_rows[row].test_entries[testnr].Eentry.select_range(0, tk.END)
+
 
     def shift_return_keypress(self, w):
         w.widget.icursor(tk.END)
@@ -373,6 +375,7 @@ class SumWin(object):
             self.student_rows[row - 2].nameentry.focus_set()
         else:
             self.student_rows[row - 2].test_entries[testnr].Eentry.focus_set()
+            self.student_rows[row].test_entries[testnr].Eentry.select_range(0, tk.END)
 
     # the triggering widget w.widget is searched for returned is a tuple of
     # (row, test number (col), kind (E=0 C=1 A=2))
