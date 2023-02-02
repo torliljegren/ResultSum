@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import test as t
+from test import Test
 from tkinter.messagebox import showerror
 from platform import system
 import threading
@@ -14,10 +14,12 @@ class EditTestWin(object):
     parent.waitWindow(etw)
     edited_test = etw.test
     """
-    def __init__(self, parent, test: t.Test, name=None):
+    def __init__(self, parent, test: Test, name=None, index=0):
+        # TODO: implement parameter test_index and result stats
         self.parent = parent
         self.test = test
         self.name = name
+        self.index = index
         self.win = tk.Toplevel(master=parent)
         self.win.title(f'Redigera {test.title}')
         self.win.wm_protocol('WM_DELETE_WINDOW', self.cancel)
@@ -254,4 +256,3 @@ class EditTestWin(object):
             except ValueError:
                 self.sumvar.set('???')
         # print('threading ends')
-

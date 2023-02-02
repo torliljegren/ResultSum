@@ -1,12 +1,12 @@
-import test
-import gradetemplate
-import student_row
-import student_test_entry
+from test import Test
+from gradetemplate import GradeTemplate
+from student_row import StudentRow
+from student_test_entry import StudentTestEntry
 import xlsxwriter as xlw
 
 class ExcelExporter(object):
 
-    def __init__(self, fname: str, student_rows: list[student_row.StudentRow], tests: tuple[test.Test], course: str,
+    def __init__(self, fname: str, student_rows: list[StudentRow], tests: tuple[Test], course: str,
                  group: str):
         wb = xlw.Workbook(filename=fname)
         ws = wb.add_worksheet()

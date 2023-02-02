@@ -1,4 +1,4 @@
-import startwin
+from startwin import StartWin
 # import student
 # import test
 # import gradetemplate
@@ -18,5 +18,5 @@ import startwin
 # ENTRY POINT
 if __name__ == "__main__":
     # open the start window
-    app_start = startwin.StartWin()
+    app_start = StartWin()
     app_start.mainloop()

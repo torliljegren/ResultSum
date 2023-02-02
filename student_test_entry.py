@@ -1,14 +1,16 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import test as t
+from test import Test
 from tkinter.messagebox import showerror
 from platform import system
 import focused
 
 
+
 class StudentTestEntry(object):
-    def __init__(self, master, test: t.Test):
+    def __init__(self, master, test: Test, student_row = None):
         self.master = master
+        self.student_row = student_row
         self.Evar = tk.StringVar(master, value=str(test.result[0]))
         self.Eentry = ttk.Entry(master, textvariable=self.Evar, width=3)
         self.Eentry.icursor(tk.END)
@@ -88,6 +90,7 @@ class StudentTestEntry(object):
         if valid:
             self.update_grade()
             self.update_sum()
+            self.student_row.update_percent()
 
     def update_grade(self):
         self.gradevar.set(self.test.grade())

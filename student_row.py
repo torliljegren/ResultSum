@@ -1,16 +1,19 @@
-import student as st
-import student_test_entry as ste
+from student import Student
+from student_test_entry import StudentTestEntry
 from tkinter import StringVar, END
 from tkinter.ttk import Entry, Label
 import focused
-import sumwin
+# from sumwin import SumWin
 
 class StudentRow(object):
-    def __init__(self, master, row: int, student: st.Student, test_entries: tuple[ste.StudentTestEntry]):
+    def __init__(self, master, row: int, student: Student, test_entries: tuple[StudentTestEntry]):
         self.master = master
         self.row = row
         self.student = student
-        self.test_entries : list[ste.StudentTestEntry] = list(test_entries)
+        self.test_entries: list[StudentTestEntry] = list(test_entries)
+        # pass self to each test entry to allow callback to update the student rows percentages
+        for entry in self.test_entries:
+            entry.student_row = self
 
         self.namevar = StringVar(master, value=student.name)
         self.nameentry = Entry(master, textvariable=self.namevar)
@@ -73,6 +76,55 @@ class StudentRow(object):
         for entry in self.test_entries:
             entry.update_sum()
             entry.update_grade()
+
+    def update_percent(self):
+        valid = True
+        # keep track of the tests total point sums
+        Etot = 0
+        Ctot = 0
+        Atot = 0
+        # keep track of the students point sums
+        sumE = 0
+        sumC = 0
+        sumA = 0
+        for entry in self.test_entries:
+            try:
+                sumE += int(entry.Evar.get())
+                sumC += int(entry.Cvar.get())
+                sumA += int(entry.Avar.get())
+                if sumE + sumC + sumA > 0:  # only count the test if the student actually participated
+                    Etot += entry.test.max[0]
+                    Ctot += entry.test.max[1]
+                    Atot += entry.test.max[2]
+            except ValueError:
+                valid = False
+                break
+        # print(f'calc_perc(): {sturow.namevar.get()} has Etot={Etot}, Ctot={Ctot}, Atot={Atot}')
+        if valid:
+            try:
+                self.var_percentE.set(str(round(sumE / Etot * 100)) + '%')
+            except ZeroDivisionError:
+                self.var_percentE.set('?%')
+
+            try:
+                self.var_percentC.set(str(round(sumC / Ctot * 100)) + '%')
+            except ZeroDivisionError:
+                self.var_percentC.set('?%')
+
+            try:
+                self.var_percentA.set(str(round(sumA / Atot * 100)) + '%')
+            except ZeroDivisionError:
+                self.var_percentA.set('?%')
+
+            try:
+                self.var_percentTOT.set(str(round((sumE + sumC + sumA) / (Etot + Ctot + Atot) * 100)) + '%')
+            except ZeroDivisionError:
+                self.var_percentTOT.set('?%')
+        else:
+            self.var_percentE.set('-%')
+            self.var_percentC.set('-%')
+            self.var_percentA.set('-%')
+            self.var_percentTOT.set('-%')
 
     def grid(self, row: int, startcolumn: int):
         self.nameentry.grid(row=row, column=startcolumn)

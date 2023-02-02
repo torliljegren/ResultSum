@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.messagebox import showerror
 import tkinter.ttk as ttk
-import test as t
+from test import Test
 from platform import system
 import threading
 import time
@@ -16,7 +16,7 @@ class TestFrame(ttk.Frame):
     edited_test = etw.test
     """
     # TODO: make every frame have a save and restore button, instead of the global ones
-    def __init__(self, parent, test: t.Test, st_test: t.Test, title=None):
+    def __init__(self, parent, test: Test, st_test: Test, title=None):
         super().__init__(master=parent, borderwidth=1)
         self.parent = parent
         self.test = test
@@ -246,7 +246,7 @@ class TestFrame(ttk.Frame):
         self.test = tst
 
 class EditStudentTestsWin(object):
-    def __init__(self, parent, tests: tuple[t.Test], st_tests, name=None):
+    def __init__(self, parent, tests: tuple[Test], st_tests, name=None):
         self.buttonframe = None
         self.parent = parent
         self.tests = tests
@@ -295,7 +295,7 @@ class EditStudentTestsWin(object):
         bgframe.pack()
 
     def save_test(self):
-        temptests: list[t.Test] = []
+        temptests: list[Test] = []
         for testframe in self.test_frames:
             err_entry = testframe.validate()
             if err_entry:

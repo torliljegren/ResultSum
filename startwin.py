@@ -6,10 +6,10 @@ import tkinter.messagebox
 import tkinter.filedialog
 import tkinter.ttk as ttk
 import platform
-import sumwin
-import student
-import test
-import gradetemplate
+from sumwin import SumWin
+from student import Student
+from test import Test
+from gradetemplate import GradeTemplate
 
 class StartWin(Tk):
     def __init__(self):
@@ -17,7 +17,7 @@ class StartWin(Tk):
         super().__init__()
         self.TITLE_FONT = (None, 14, 'bold')
         self.HEADING_FONT = (None, 12, 'bold')
-        self.sumwin: sumwin.SumWin = None
+        self.sumwin: SumWin = None
         self.destroyed = False
         self.withdraw()
         self.attributes('-alpha', 0)
@@ -159,14 +159,14 @@ class StartWin(Tk):
         dummy_tests = list()
         for stuindex in range(nstus):
             for testindex in range(ntests):
-                dummy_tests.append(test.Test(f'Prov {testindex + 1}', (0, 0, 0), (0, 0, 0),
-                                             gradetemplate.GradeTemplate(1, (1, 1), (1, 1), (1, 1), (1, 1))
+                dummy_tests.append(Test(f'Prov {testindex + 1}', (0, 0, 0), (0, 0, 0),
+                                             GradeTemplate(1, (1, 1), (1, 1), (1, 1), (1, 1))
                                              )
                                    )
-            students.append(student.Student('Elev '+str(stuindex+1), tuple(dummy_tests)))
+            students.append(Student('Elev '+str(stuindex+1), tuple(dummy_tests)))
             dummy_tests = list()
 
-        s = sumwin.SumWin(tuple([tst.title for tst in students[0].tests]), tuple(students), master=self,
+        s = SumWin(tuple([tst.title for tst in students[0].tests]), tuple(students), master=self,
                           root=tkinter.Toplevel(self), course=self.var_subject.get(), group=self.var_class.get())
         self.clear_entries()
 
@@ -174,7 +174,7 @@ class StartWin(Tk):
     def load_press(self):
         fpath = tkinter.filedialog.askopenfilename(filetypes=(('Bedömningsmall', '*.dat'),), parent=self)
         if fpath:
-            sumwin.SumWin.load_session(win=tkinter.Toplevel(master=self), filepath=fpath, master=self)
+            SumWin.load_session(win=tkinter.Toplevel(master=self), filepath=fpath, master=self)
             self.iconify()
             self.clear_entries()
 
