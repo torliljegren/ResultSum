@@ -262,6 +262,7 @@ class EditStudentTestsWin(object):
         self.initUI()
 
     def initUI(self):
+        # creates a frame for each test, placed horizontally
         s = ttk.Style(self.parent)
         s.configure('Heading.TLabel', font=((None, 14, 'bold') if system() == 'Darwin' else (None, 11, 'bold')))
 

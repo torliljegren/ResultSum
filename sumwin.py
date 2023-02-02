@@ -10,6 +10,7 @@ from test import Test
 from student_row import StudentRow
 from edit_student_tests_win import EditStudentTestsWin
 from testinfo import TestInfo
+from statwin import StatWin
 import platform
 from testheading import TestHeading
 from edittestwin import EditTestWin
@@ -19,8 +20,6 @@ from tkinter.messagebox import showerror, showinfo
 import tkinter.filedialog
 import pyperclip
 from tktooltip import ToolTip
-# import threading as t
-from time import sleep
 
 
 class SumWin(object):
@@ -151,6 +150,9 @@ class SumWin(object):
         self.rightbutton = ttk.Button(master=self.topframe, image=self.rightimage, command=self.cmd_move_test_right)
         self.rightbutton.grid(row=0, column=14, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+
+        self.statbutton = ttk.Button(master=self.topframe, text='S', command=lambda: StatWin(self))
+        self.statbutton.grid(row=0, column=15, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)
@@ -859,62 +861,6 @@ class SumWin(object):
         SumWin(testtitles=tuple([tst['title'] for tst in tests_data]), students=tuple(students),
                root=win, filepath=filepath, master=master, course=course, group=group)
         return 0
-
-    def update_perc(self):
-        # TODO: make this as a result of leave focus on entries instead (this threaded approach eats memory)
-        while self.run_thread:
-            # t1 = perf_counter()
-            sumE = 0
-            Etot = 0
-            sumC = 0
-            Ctot = 0
-            sumA = 0
-            Atot = 0
-            for sturow in self.student_rows:
-
-                valid = True
-                for entry in sturow.test_entries:
-                    try:
-                        sumE += int(entry.Evar.get())
-                        sumC += int(entry.Cvar.get())
-                        sumA += int(entry.Avar.get())
-                        if sumE + sumC + sumA > 0:  # only count the test if the student actually participated
-                            Etot += entry.test.max[0]
-                            Ctot += entry.test.max[1]
-                            Atot += entry.test.max[2]
-                    except ValueError:
-                        valid = False
-                        break
-                # print(f'calc_perc(): {sturow.namevar.get()} has Etot={Etot}, Ctot={Ctot}, Atot={Atot}')
-                if valid:
-                    try:
-                        sturow.var_percentE.set(str(round(sumE / Etot * 100)) + '%')
-                    except ZeroDivisionError:
-                        sturow.var_percentE.set('?%')
-
-                    try:
-                        sturow.var_percentC.set(str(round(sumC / Ctot * 100)) + '%')
-                    except ZeroDivisionError:
-                        sturow.var_percentC.set('?%')
-
-                    try:
-                        sturow.var_percentA.set(str(round(sumA / Atot * 100)) + '%')
-                    except ZeroDivisionError:
-                        sturow.var_percentA.set('?%')
-
-                    try:
-                        sturow.var_percentTOT.set(str(round((sumE + sumC + sumA) / (Etot + Ctot + Atot) * 100)) + '%')
-                    except ZeroDivisionError:
-                        sturow.var_percentTOT.set('?%')
-                else:
-                    sturow.var_percentE.set('-%')
-                    sturow.var_percentC.set('-%')
-                    sturow.var_percentA.set('-%')
-                    sturow.var_percentTOT.set('-%')
-
-            sleep(0.5)
-            # t2 = perf_counter()
-            # print(f'update_perc(): function spent {(t2-t1)*1000} ms')
 
 
     def on_close(self):
