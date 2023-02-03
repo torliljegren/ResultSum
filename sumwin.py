@@ -151,8 +151,10 @@ class SumWin(object):
         self.rightbutton.grid(row=0, column=14, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
 
-        self.statbutton = ttk.Button(master=self.topframe, text='S', command=lambda: StatWin(self))
+        self.statimage = tk.PhotoImage(file='stat.png', master=self.win)
+        self.statbutton = ttk.Button(master=self.topframe, image=self.statimage, command=lambda: StatWin(self))
         self.statbutton.grid(row=0, column=15, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
+        ToolTip(self.infobutton, msg='Visa statistik', delay=0.7)
 
         self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
         self.contentframe.grid(row=1, column=0)

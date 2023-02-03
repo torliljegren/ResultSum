@@ -1,8 +1,5 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-# from sumwin import SumWin
-from student_row import StudentRow
-from student_test_entry import StudentTestEntry
 
 # constants for painting the bar chart
 RECTANGLE_WIDTH = 40
@@ -24,6 +21,8 @@ class StatWin(object):
         self.mainframe.grid(row=0, column=0)
 
         tuple_of_tests = self.grade_tuple()
+        max_num_grades_per_test = self.max_num_grades(tuple_of_tests)
+        print(f'Max registered grades in a test is {max_num_grades_per_test}')
         nr_of_tests = len(tuple_of_tests)
 
         # create a grid of canvases and frames for each test and place them horizontally. Between each, put a separator
@@ -38,7 +37,7 @@ class StatWin(object):
             else:
                 cc = tk.Canvas(self.mainframe)
                 self.chartcanvases.append(cc)
-                self.draw_barchart(cc, tuple_of_tests[i-additional])
+                self.draw_barchart(cc, tuple_of_tests[i-additional], max_num_grades_per_test)
                 cc.grid(row=1, column=i)
                 tf = ttk.Frame(self.mainframe)
                 self.titleframes.append(tf)
@@ -49,13 +48,13 @@ class StatWin(object):
                 cc.configure(width=framewidth)
                 tf.configure(width=framewidth)
 
-    def draw_barchart(self, chartcanvas: tk.Canvas, stats: dict):
+    def draw_barchart(self, chartcanvas: tk.Canvas, stats: dict, maxnum: int):
         num_individual_grades = sum(stats.values())
         print('Drawing barchart for:', stats)
 
         startx = 0
         for grade, numgrade in stats.items():
-            height = numgrade/num_individual_grades*RECTANGLE_MAX_HEIGHT
+            height = numgrade/maxnum*RECTANGLE_MAX_HEIGHT*0.9
             chartcanvas.create_rectangle(startx, RECTANGLE_MAX_HEIGHT-height, startx + RECTANGLE_WIDTH, RECTANGLE_MAX_HEIGHT,
                                           fill=GRADE_COLORS[grade])
             chartcanvas.create_text(startx+RECTANGLE_WIDTH/2, RECTANGLE_MAX_HEIGHT-height-12, justify='center',
@@ -90,3 +89,15 @@ class StatWin(object):
                     stats[testnr]['-'] += 1
                 testnr += 1
         return tuple(stats)
+
+    """
+    Given n tests in the gradetuple, determine the maximum number of a grade given
+    """
+    def max_num_grades(self, gradetuple: tuple) -> int:
+        max_g = 0
+        for gr_t in gradetuple:
+            for num in gr_t.values():
+                if num > max_g:
+                    max_g = num
+        return max_g
+
