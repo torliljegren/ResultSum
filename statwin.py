@@ -19,6 +19,7 @@ class StatWin(object):
     def __init__(self, sumwin):
         self.sumwin = sumwin
         self.win = tk.Toplevel(master=self.sumwin.win)
+        self.win.title('Betygsstatistik')
         self.mainframe = ttk.Frame(self.win)
         self.mainframe.grid(row=0, column=0)
 
@@ -27,36 +28,39 @@ class StatWin(object):
 
         # create a grid of canvases and frames for each test and place them horizontally. Between each, put a separator
         self.titleframes = list()
-        self.chartframes = list()
+        self.chartcanvases = list()
         additional = 0
         for i in range(2*nr_of_tests - 1):
             if i%2 != 0:
-                ttk.Separator(master=self.mainframe, orient=tk.VERTICAL).grid(row=0, column=i, sticky=tk.NSEW)
+                ttk.Separator(master=self.mainframe, orient=tk.VERTICAL).grid(row=0, column=i, sticky=tk.NSEW,
+                                                                              rowspan=2, padx=10)
                 additional += 1
             else:
-                cf = ttk.Frame(self.mainframe, borderwidth=1)
-                self.chartframes.append(cf)
-                self.draw_barchart(cf, tuple_of_tests[i-additional])
-                cf.grid(row=0, column=i)
+                cc = tk.Canvas(self.mainframe)
+                self.chartcanvases.append(cc)
+                self.draw_barchart(cc, tuple_of_tests[i-additional])
+                cc.grid(row=1, column=i)
                 tf = ttk.Frame(self.mainframe)
                 self.titleframes.append(tf)
-                ttk.Label(master=tf, text=self.sumwin.testtitles[i-additional]).grid(row=0, column=0)
-                tf.grid(row=1, column=i)
+                ttk.Label(master=tf, text=self.sumwin.testtitles[i-additional], font=('helvetica', 14, 'bold')).\
+                    grid(row=0, column=0,pady=(15,0))
+                tf.grid(row=0, column=i)
+                framewidth = len(GRADE_COLORS)*RECTANGLE_WIDTH
+                cc.configure(width=framewidth)
+                tf.configure(width=framewidth)
 
-    def draw_barchart(self, chartframe: ttk.Frame, stats: dict):
-        chart_canvas = tk.Canvas(chartframe)
+    def draw_barchart(self, chartcanvas: tk.Canvas, stats: dict):
         num_individual_grades = sum(stats.values())
         print('Drawing barchart for:', stats)
 
         startx = 0
         for grade, numgrade in stats.items():
             height = numgrade/num_individual_grades*RECTANGLE_MAX_HEIGHT
-            chart_canvas.create_rectangle(startx, RECTANGLE_MAX_HEIGHT-height, startx + RECTANGLE_WIDTH, RECTANGLE_MAX_HEIGHT,
+            chartcanvas.create_rectangle(startx, RECTANGLE_MAX_HEIGHT-height, startx + RECTANGLE_WIDTH, RECTANGLE_MAX_HEIGHT,
                                           fill=GRADE_COLORS[grade])
-            chart_canvas.create_text(startx+RECTANGLE_WIDTH/2, RECTANGLE_MAX_HEIGHT-height-12, justify='center',
+            chartcanvas.create_text(startx+RECTANGLE_WIDTH/2, RECTANGLE_MAX_HEIGHT-height-12, justify='center',
                                      text=('Ej' if grade=='-' else grade)+':'+str(stats[grade]))
             startx += RECTANGLE_WIDTH
-            chart_canvas.pack()
 
 
 
