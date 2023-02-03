@@ -5,15 +5,15 @@ from student_row import StudentRow
 from student_test_entry import StudentTestEntry
 
 # constants for painting the bar chart
-RECTANGLE_WIDTH = 50
+RECTANGLE_WIDTH = 40
 RECTANGLE_MAX_HEIGHT = 200
-GRADE_COLORS = {"-" : "grey",
-                "F" : "red",
-                "E" : "limegreen",
-                "D" : "green",
-                "C" : "blue",
-                "B" : "indigo",
-                "A" : "violet"}
+GRADE_COLORS = {"-" : "light slate gray",
+                "F" : "tomato",
+                "E" : "OliveDrab1",
+                "D" : "PaleTurquoise2",
+                "C" : "SkyBlue2",
+                "B" : "SlateBlue1",
+                "A" : "hot pink"}
 
 class StatWin(object):
     def __init__(self, sumwin):
@@ -25,30 +25,39 @@ class StatWin(object):
         tuple_of_tests = self.grade_tuple()
         nr_of_tests = len(tuple_of_tests)
 
-        # create a grid of canvases and frames for each test and place them horizontally
+        # create a grid of canvases and frames for each test and place them horizontally. Between each, put a separator
         self.titleframes = list()
         self.chartframes = list()
-        for i in range(nr_of_tests):
-            cf = ttk.Frame(self.mainframe, borderwidth=1)
-            self.chartframes.append(cf)
-            self.draw_barchart(cf, tuple_of_tests[i])
-            cf.grid(row=0, column=i)
-            tf = ttk.Frame(self.mainframe)
-            self.titleframes.append(tf)
-            ttk.Label(master=tf, text=self.sumwin.testtitles[i]).grid(row=0, column=0)
-            tf.grid(row=1, column=i)
+        additional = 0
+        for i in range(2*nr_of_tests - 1):
+            if i%2 != 0:
+                ttk.Separator(master=self.mainframe, orient=tk.VERTICAL).grid(row=0, column=i, sticky=tk.NSEW)
+                additional += 1
+            else:
+                cf = ttk.Frame(self.mainframe, borderwidth=1)
+                self.chartframes.append(cf)
+                self.draw_barchart(cf, tuple_of_tests[i-additional])
+                cf.grid(row=0, column=i)
+                tf = ttk.Frame(self.mainframe)
+                self.titleframes.append(tf)
+                ttk.Label(master=tf, text=self.sumwin.testtitles[i-additional]).grid(row=0, column=0)
+                tf.grid(row=1, column=i)
 
     def draw_barchart(self, chartframe: ttk.Frame, stats: dict):
         chart_canvas = tk.Canvas(chartframe)
         num_individual_grades = sum(stats.values())
+        print('Drawing barchart for:', stats)
 
         startx = 0
         for grade, numgrade in stats.items():
-            chart_canvas.create_rectangle(startx, 0, startx + RECTANGLE_WIDTH,
-                                          numgrade/num_individual_grades*RECTANGLE_MAX_HEIGHT,
+            height = numgrade/num_individual_grades*RECTANGLE_MAX_HEIGHT
+            chart_canvas.create_rectangle(startx, RECTANGLE_MAX_HEIGHT-height, startx + RECTANGLE_WIDTH, RECTANGLE_MAX_HEIGHT,
                                           fill=GRADE_COLORS[grade])
+            chart_canvas.create_text(startx+RECTANGLE_WIDTH/2, RECTANGLE_MAX_HEIGHT-height-12, justify='center',
+                                     text=('Ej' if grade=='-' else grade)+':'+str(stats[grade]))
             startx += RECTANGLE_WIDTH
             chart_canvas.pack()
+
 
 
     # returns a tuple of dicts with the number of each grade in each test, and an empty tuple if no tests are defined
