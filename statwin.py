@@ -5,12 +5,12 @@ import tkinter.ttk as ttk
 RECTANGLE_WIDTH = 40
 RECTANGLE_MAX_HEIGHT = 200
 GRADE_COLORS = {"-" : "light slate gray",
-                "F" : "tomato",
+                "F" : "red",
                 "E" : "OliveDrab1",
-                "D" : "PaleTurquoise2",
+                "D" : "SpringGreen2",
                 "C" : "SkyBlue2",
                 "B" : "SlateBlue1",
-                "A" : "hot pink"}
+                "A" : "maroon1"}
 
 class StatWin(object):
     def __init__(self, sumwin):
@@ -49,7 +49,7 @@ class StatWin(object):
                 tf.configure(width=framewidth)
 
     def draw_barchart(self, chartcanvas: tk.Canvas, stats: dict, maxnum: int):
-        num_individual_grades = sum(stats.values())
+        # num_individual_grades = sum(stats.values())
         print('Drawing barchart for:', stats)
 
         startx = 0
@@ -75,7 +75,7 @@ class StatWin(object):
                   'D':0,
                   'C':0,
                   'B':0,
-                  'A':0} for i in range(nr_of_tests)]
+                  'A':0} for _ in range(nr_of_tests)]
 
         # iterate through all students tests and increment the grade counts
         valid_grades = ('F', 'E', 'D', 'C', 'B', 'A')
