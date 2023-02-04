@@ -1,3 +1,4 @@
+import math
 import tkinter as tk
 import tkinter.ttk as ttk
 
@@ -11,6 +12,13 @@ GRADE_COLORS = {"-" : "light slate gray",
                 "C" : "SkyBlue2",
                 "B" : "SlateBlue1",
                 "A" : "maroon1"}
+
+GRADE_POINTS = {'A' : 20,
+                'B' : 17.5,
+                'C' : 15,
+                'D' : 12.5,
+                'E' : 10,
+                'F' : 0}
 
 class StatWin(object):
     def __init__(self, sumwin):
@@ -30,11 +38,11 @@ class StatWin(object):
         self.chartcanvases = list()
         additional = 0
         for i in range(2*nr_of_tests - 1):
-            if i%2 != 0:
+            if i%2 != 0:    # place a separator on odd columns
                 ttk.Separator(master=self.mainframe, orient=tk.VERTICAL).grid(row=0, column=i, sticky=tk.NSEW,
                                                                               rowspan=2, padx=10)
                 additional += 1
-            else:
+            else:   # place a title, barchart and stats on even columns
                 cc = tk.Canvas(self.mainframe)
                 self.chartcanvases.append(cc)
                 self.draw_barchart(cc, tuple_of_tests[i-additional], max_num_grades_per_test)
@@ -44,7 +52,12 @@ class StatWin(object):
                 ttk.Label(master=tf, text=self.sumwin.testtitles[i-additional], font=('helvetica', 14, 'bold')).\
                     grid(row=0, column=0,pady=(15,0))
                 tf.grid(row=0, column=i)
+                mean, std_dev = self.one_var_stats(tuple_of_tests[i-additional])
+                ttk.Label(master=tf, text='Medelvärde: '+str(round(mean, 1))).grid(row=1, column=0)
+                ttk.Label(master=tf, text='Stdavvikelse: '+str(round(std_dev, 1))).grid(row=2, column=0)
                 framewidth = len(GRADE_COLORS)*RECTANGLE_WIDTH
+
+
                 cc.configure(width=framewidth)
                 tf.configure(width=framewidth)
 
@@ -61,6 +74,29 @@ class StatWin(object):
                                      text=('Ej' if grade=='-' else grade)+':'+str(stats[grade]))
             startx += RECTANGLE_WIDTH
 
+    """
+    returns a tuple on the format (mean, stddev)
+    """
+    def one_var_stats(self, stats: dict) -> tuple:
+        # calculate the mean via the sum of all points of the grades
+        point_sum = 0
+        grade_sum = 0
+        valid_grades = ('A', 'B', 'C', 'D', 'E', 'F')
+        for grade, numgrade in stats.items():
+            point_sum += numgrade * GRADE_POINTS[grade] if grade in valid_grades else 0
+            grade_sum += numgrade if grade in valid_grades else 0
+        print(f'Number of grades: {grade_sum}')
+        print(f'Point sum of all grades: {point_sum}')
+        mean = point_sum/grade_sum
+        print(f'Mean: {mean}')
+
+        # calculate the standard deviation
+        quadratic_difference = 0
+        for grade, numgrade in stats.items():
+            quadratic_difference += stats[grade] * ((GRADE_POINTS[grade] - mean) ** 2) if grade in valid_grades else 0
+        std_dev = math.sqrt(quadratic_difference/(grade_sum - 1))
+
+        return mean, std_dev
 
 
     # returns a tuple of dicts with the number of each grade in each test, and an empty tuple if no tests are defined
