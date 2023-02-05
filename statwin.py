@@ -87,14 +87,14 @@ class StatWin(object):
             grade_sum += numgrade if grade in valid_grades else 0
         print(f'Number of grades: {grade_sum}')
         print(f'Point sum of all grades: {point_sum}')
-        mean = point_sum/grade_sum
+        mean = point_sum/grade_sum if grade_sum != 0 else 0
         print(f'Mean: {mean}')
 
         # calculate the standard deviation
         quadratic_difference = 0
         for grade, numgrade in stats.items():
             quadratic_difference += stats[grade] * ((GRADE_POINTS[grade] - mean) ** 2) if grade in valid_grades else 0
-        std_dev = math.sqrt(quadratic_difference/(grade_sum - 1))
+        std_dev = math.sqrt(quadratic_difference/(grade_sum - 1)) if mean != 0 else 0
 
         return mean, std_dev
 
