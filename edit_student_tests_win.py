@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import tkinter as tk
 from tkinter.messagebox import showerror
 import tkinter.ttk as ttk
@@ -314,7 +316,6 @@ class EditStudentTestsWin(object):
     def restore_test(self):
         self.pressed = 'restore'
         self.win.destroy()
-
 
     def cancel(self):
         self.pressed = 'cancel'

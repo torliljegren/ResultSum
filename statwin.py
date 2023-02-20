@@ -7,11 +7,11 @@ RECTANGLE_WIDTH = 40
 RECTANGLE_MAX_HEIGHT = 200
 GRADE_COLORS = {"-" : "light slate gray",
                 "F" : "red",
-                "E" : "OliveDrab1",
-                "D" : "SpringGreen2",
-                "C" : "SkyBlue2",
-                "B" : "SlateBlue1",
-                "A" : "maroon1"}
+                "E" : "lawn green",
+                "D" : "forest green",
+                "C" : "deep sky blue",
+                "B" : "maroon1",
+                "A" : "gold"}
 
 GRADE_POINTS = {'A' : 20,
                 'B' : 17.5,
@@ -30,13 +30,13 @@ class StatWin(object):
 
         tuple_of_tests = self.grade_tuple()
         max_num_grades_per_test = self.max_num_grades(tuple_of_tests)
-        print(f'Max registered grades in a test is {max_num_grades_per_test}')
+        print(f'Max registered grades in a test is: {max_num_grades_per_test}')
         nr_of_tests = len(tuple_of_tests)
 
         # create a grid of canvases and frames for each test and place them horizontally. Between each, put a separator
         self.titleframes = list()
         self.chartcanvases = list()
-        additional = 0
+        additional = 0  # each time a separator i placed, add that to the column in grid()
         for i in range(2*nr_of_tests - 1):
             if i%2 != 0:    # place a separator on odd columns
                 ttk.Separator(master=self.mainframe, orient=tk.VERTICAL).grid(row=0, column=i, sticky=tk.NSEW,
@@ -45,7 +45,7 @@ class StatWin(object):
             else:   # place a title, barchart and stats on even columns
                 cc = tk.Canvas(self.mainframe)
                 self.chartcanvases.append(cc)
-                self.draw_barchart(cc, tuple_of_tests[i-additional], max_num_grades_per_test)
+                self.draw_barchart(cc, tuple_of_tests[i-additional], max_num_grades_per_test[i-additional])
                 cc.grid(row=1, column=i)
                 tf = ttk.Frame(self.mainframe)
                 self.titleframes.append(tf)
@@ -101,7 +101,7 @@ class StatWin(object):
 
     # returns a tuple of dicts with the number of each grade in each test, and an empty tuple if no tests are defined
     # tuple structure:
-    # ( {'invalid':int, 'E':int, 'D':int...}, ... ) i.e. a dict for each test
+    # ( {'invalid':int, 'E':int, 'D':int...}, {...} ... ) i.e. a dict for each test
     def grade_tuple(self) -> tuple:
         # list of dicts to hold the number of each grade
         nr_of_tests = len(self.sumwin.student_rows[0].test_entries)
@@ -129,11 +129,13 @@ class StatWin(object):
     """
     Given n tests in the gradetuple, determine the maximum number of a grade given
     """
-    def max_num_grades(self, gradetuple: tuple) -> int:
-        max_g = 0
+    def max_num_grades(self, gradetuple: tuple) -> tuple:
+        maxtestnums = list()
         for gr_t in gradetuple:
+            max_g = 0
             for num in gr_t.values():
                 if num > max_g:
                     max_g = num
-        return max_g
+            maxtestnums.append(max_g)
+        return tuple(maxtestnums)
 
