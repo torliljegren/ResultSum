@@ -11,6 +11,7 @@ from student_row import StudentRow
 from edit_student_tests_win import EditStudentTestsWin
 from testinfo import TestInfo
 from statwin import StatWin
+from student_stat_win import StudentStatWin
 import platform
 from testheading import TestHeading
 from edittestwin import EditTestWin
@@ -454,7 +455,8 @@ class SumWin(object):
         editwin = EditStudentTestsWin(self.win,
                                            tuple([stest.test for stest in self.student_rows[row].test_entries]),
                                            self.find_standard_tests(), name)
-        self.win.wait_window(editwin.win)
+        stustatswin = StudentStatWin(self.win, tuple([stest.test for stest in self.student_rows[row].test_entries]))
+        # self.win.wait_window(editwin.win)
         print(f'editwin: {editwin.pressed} pressed')
 
         if editwin.pressed == 'cancel':

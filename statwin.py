@@ -1,24 +1,7 @@
 import math
 import tkinter as tk
 import tkinter.ttk as ttk
-
-# constants for painting the bar chart
-RECTANGLE_WIDTH = 40
-RECTANGLE_MAX_HEIGHT = 200
-GRADE_COLORS = {"-" : "light slate gray",
-                "F" : "red",
-                "E" : "lawn green",
-                "D" : "forest green",
-                "C" : "deep sky blue",
-                "B" : "maroon1",
-                "A" : "gold"}
-
-GRADE_POINTS = {'A' : 20,
-                'B' : 17.5,
-                'C' : 15,
-                'D' : 12.5,
-                'E' : 10,
-                'F' : 0}
+from constants import *
 
 class StatWin(object):
     def __init__(self, sumwin):
