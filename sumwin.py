@@ -455,7 +455,8 @@ class SumWin(object):
         editwin = EditStudentTestsWin(self.win,
                                            tuple([stest.test for stest in self.student_rows[row].test_entries]),
                                            self.find_standard_tests(), name)
-        stustatswin = StudentStatWin(self.win, tuple([stest.test for stest in self.student_rows[row].test_entries]))
+        stustatswin = StudentStatWin(self.win, tuple([stest.test for stest in self.student_rows[row].test_entries]),
+                                     name)
         # self.win.wait_window(editwin.win)
         print(f'editwin: {editwin.pressed} pressed')
 
