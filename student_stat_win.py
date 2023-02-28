@@ -24,7 +24,7 @@ class ProgressFrame(Frame):
     """
     def __init__(self, master, stutests: tuple):
         super().__init__(master, height=RESULT_RECTANGLE_MAX_HEIGHT*1.3)
-        self.chartcanvases = [Canvas(self, borderwidth=2, height=RESULT_RECTANGLE_MAX_HEIGHT*1.3) for _ in stutests]
+        self.chartcanvases = [Canvas(self, borderwidth=2, height=RESULT_RECTANGLE_MAX_HEIGHT*1.3, bg='white') for _ in stutests]
 
         i = 0
         for cvs in self.chartcanvases:

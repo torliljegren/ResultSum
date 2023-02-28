@@ -3,6 +3,8 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from constants import *
 
+VALID_GRADES = ('F', 'E', 'D', 'C', 'B', 'A')
+
 class StatWin(object):
     def __init__(self, sumwin):
         self.sumwin = sumwin
@@ -64,10 +66,9 @@ class StatWin(object):
         # calculate the mean via the sum of all points of the grades
         point_sum = 0
         grade_sum = 0
-        valid_grades = ('A', 'B', 'C', 'D', 'E', 'F')
         for grade, numgrade in stats.items():
-            point_sum += numgrade * GRADE_POINTS[grade] if grade in valid_grades else 0
-            grade_sum += numgrade if grade in valid_grades else 0
+            point_sum += numgrade * GRADE_POINTS[grade] if grade in VALID_GRADES else 0
+            grade_sum += numgrade if grade in VALID_GRADES else 0
         print(f'Number of grades: {grade_sum}')
         print(f'Point sum of all grades: {point_sum}')
         mean = point_sum/grade_sum if grade_sum != 0 else 0
@@ -76,7 +77,7 @@ class StatWin(object):
         # calculate the standard deviation
         quadratic_difference = 0
         for grade, numgrade in stats.items():
-            quadratic_difference += stats[grade] * ((GRADE_POINTS[grade] - mean) ** 2) if grade in valid_grades else 0
+            quadratic_difference += stats[grade] * ((GRADE_POINTS[grade] - mean) ** 2) if grade in VALID_GRADES else 0
         std_dev = math.sqrt(quadratic_difference/(grade_sum - 1)) if mean != 0 else 0
 
         return mean, std_dev
@@ -86,7 +87,7 @@ class StatWin(object):
     # tuple structure:
     # ( {'invalid':int, 'E':int, 'D':int...}, {...} ... ) i.e. a dict for each test
     def grade_tuple(self) -> tuple:
-        # list of dicts to hold the number of each grade
+        # tuple of dicts which hold the number of each grade
         nr_of_tests = len(self.sumwin.student_rows[0].test_entries)
         stats = [{'-':0,
                   'F':0,
@@ -97,12 +98,11 @@ class StatWin(object):
                   'A':0} for _ in range(nr_of_tests)]
 
         # iterate through all students tests and increment the grade counts
-        valid_grades = ('F', 'E', 'D', 'C', 'B', 'A')
         for row in self.sumwin.student_rows:
             testnr = 0
             for testentry in row.test_entries:
                 g = testentry.gradeentry.get()
-                if g in valid_grades:
+                if g in VALID_GRADES:
                     stats[testnr][g] += 1
                 else:
                     stats[testnr]['-'] += 1

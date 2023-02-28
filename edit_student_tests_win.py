@@ -48,6 +48,7 @@ class TestFrame(ttk.Frame):
         ttk.Label(self.middleframe, text='C-poäng').grid(row=0, column=2)
         ttk.Label(self.middleframe, text='A-poäng').grid(row=0, column=3)
         ttk.Label(self.middleframe, text='Totalpoäng').grid(row=0, column=4)
+        ttk.Label(self.middleframe, text='Omdöme').grid(row=0, column=5)
         self.Estuvar = tk.IntVar(self.middleframe, test.result[0])
         self.Estu = ttk.Entry(self.middleframe, textvariable=self.Estuvar, width=4, state='readonly')
         self.Estu.grid(row=1, column=1, pady=(0, yp))
@@ -61,6 +62,8 @@ class TestFrame(ttk.Frame):
         self.sumstu = ttk.Entry(self.middleframe, textvariable=self.sumstuvar,
                                 width=4, state='readonly')
         self.sumstu.grid(row=1, column=4, pady=(0, yp))
+        self.gradelabel = ttk.Label(self.middleframe, text=test.grade(), font=((None, 14, 'bold') if system() == 'Darwin' else (None, 11, 'bold')))
+        self.gradelabel.grid(row=1, column=5, pady=(0, yp))
 
         ttk.Label(self.middleframe, text='Maxpoäng', style='Heading.TLabel').grid(row=2, column=0, padx=(0, 15))
         ttk.Label(self.middleframe, text='E-poäng').grid(row=2, column=1)
@@ -137,6 +140,7 @@ class TestFrame(ttk.Frame):
 
     def validate(self) -> ttk.Entry | None:
         # check for input errors
+        # return a reference to the entry that errors
         Emax = 0
         try:
             Emax = int(self.Emaxvar.get())
