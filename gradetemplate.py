@@ -18,6 +18,9 @@ class GradeTemplate(object):
 
         return GradeTemplate(tempE, tempD, tempC, tempB, tempA)
 
+    def empty(self) -> bool:
+        return self.E<1 and sum(self.D)<1 and sum(self.C)<1 and sum(self.B)<1 and sum(self.A)<1
+
 
     def __str__(self):
         return str(self.E)+str(self.D)+str(self.C)+str(self.B)+str(self.A)

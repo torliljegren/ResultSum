@@ -38,12 +38,16 @@ class ProgressFrame(Frame):
         self.pack(fill=BOTH)
 
     def draw_chart(self, canvas: Canvas, stutest: Test):
+        if stutest.gradetemplate.empty():
+            return
         PADY = 0
         DASH = (2, 1)
         tlx = 50 # top left x
         tly = 0 # top left y
         bry = RESULT_RECTANGLE_MAX_HEIGHT + PADY # bottom right y
         testmaxpoints = sum(stutest.max)
+        if testmaxpoints == 0:
+            return
 
         # BAR FOR TOTAL POINTS #
         # draw the bar and its text
@@ -109,7 +113,7 @@ class ProgressFrame(Frame):
         canvas.create_line(0, bry, tlx+RECTANGLE_WIDTH, bry)
 
         # draw a top line representing the max number of points in any category
-        canvas.create_line(0, 5, tlx+RECTANGLE_WIDTH, 5, dash=(1,1))
+        canvas.create_line(0, 5, tlx+RECTANGLE_WIDTH, 5, dash=(1,2))
 
         canvas.config(width=tlx+RECTANGLE_WIDTH+1)
 
