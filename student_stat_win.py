@@ -54,19 +54,21 @@ class ProgressFrame(Frame):
         bheight = stutest.gradetemplate.B[0] / testmaxpoints * RESULT_RECTANGLE_MAX_HEIGHT
         aheight = stutest.gradetemplate.A[0] / testmaxpoints * RESULT_RECTANGLE_MAX_HEIGHT
         canvas.create_line(tlx, bry-eheight, tlx+RECTANGLE_WIDTH, bry-eheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-eheight-12, text='E')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-eheight-12, text=f'E({stutest.gradetemplate.E})')
         canvas.create_line(tlx, bry-dheight, tlx+RECTANGLE_WIDTH, bry-dheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-dheight-12, text='D')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-dheight-12, text=f'D({stutest.gradetemplate.D[0]})')
         canvas.create_line(tlx, bry-cheight, tlx+RECTANGLE_WIDTH, bry-cheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-cheight-12, text='C')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-cheight-12, text=f'C({stutest.gradetemplate.C[0]})')
         canvas.create_line(tlx, bry-bheight, tlx+RECTANGLE_WIDTH, bry-bheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-bheight-12, text='B')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-bheight-12, text=f'B({stutest.gradetemplate.B[0]})')
         canvas.create_line(tlx, bry-aheight, tlx+RECTANGLE_WIDTH, bry-aheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-aheight-12, text='A')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-aheight-12, text=f'A({stutest.gradetemplate.A[0]})')
 
         # BAR FOR C POINTS #
         # draw the bar and its text
         rheight = (stutest.result[1] + stutest.result[2]) / stutest.max[1] * RESULT_RECTANGLE_MAX_HEIGHT
+        if rheight > RESULT_RECTANGLE_MAX_HEIGHT-5:
+            rheight = RESULT_RECTANGLE_MAX_HEIGHT-5 # prevent the bar to reach over the top
         tly = bry - rheight
         tlx += 2*RECTANGLE_WIDTH
         canvas.create_rectangle(tlx, tly+PADY, tlx + RECTANGLE_WIDTH, bry, fill='linen')
@@ -76,13 +78,15 @@ class ProgressFrame(Frame):
         dheight = stutest.gradetemplate.D[1] / stutest.max[1] * RESULT_RECTANGLE_MAX_HEIGHT
         cheight = stutest.gradetemplate.C[1] / stutest.max[1] * RESULT_RECTANGLE_MAX_HEIGHT
         canvas.create_line(tlx, bry-dheight, tlx+RECTANGLE_WIDTH, bry-dheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-dheight-12, text='D')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-dheight-12, text=f'D({stutest.gradetemplate.D[1]})')
         canvas.create_line(tlx, bry-cheight, tlx+RECTANGLE_WIDTH, bry-cheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-cheight-12, text='C')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-cheight-12, text=f'C({stutest.gradetemplate.C[1]})')
 
         # BAR FOR A POINTS #
         # draw the bar and its text
         rheight = stutest.result[2] / stutest.max[2] * RESULT_RECTANGLE_MAX_HEIGHT
+        if rheight > RESULT_RECTANGLE_MAX_HEIGHT-5:
+            rheight = RESULT_RECTANGLE_MAX_HEIGHT-5 # prevent the bar to reach over the top
         tly = bry - rheight
         tlx += 2*RECTANGLE_WIDTH
         canvas.create_rectangle(tlx, tly+PADY, tlx + RECTANGLE_WIDTH, bry, fill='linen')
@@ -92,7 +96,10 @@ class ProgressFrame(Frame):
         bheight = stutest.gradetemplate.B[1] / stutest.max[2] * RESULT_RECTANGLE_MAX_HEIGHT
         aheight = stutest.gradetemplate.A[1] / stutest.max[2] * RESULT_RECTANGLE_MAX_HEIGHT
         canvas.create_line(tlx, bry-bheight, tlx+RECTANGLE_WIDTH, bry-bheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-bheight-12, text='B')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-bheight-12, text=f'B({stutest.gradetemplate.B[1]})')
         canvas.create_line(tlx, bry-aheight, tlx+RECTANGLE_WIDTH, bry-aheight, dash=DASH)
-        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-aheight-12, text='A')
+        canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry-aheight-12, text=f'A({stutest.gradetemplate.A[1]})')
+
+        # draw a top line representing the max number of points in any category
+        canvas.create_line(0, 5, tlx+RECTANGLE_WIDTH, 5, dash=(1,1))
 
