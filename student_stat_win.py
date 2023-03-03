@@ -1,6 +1,5 @@
-from tkinter import Toplevel, Canvas
+from tkinter import Toplevel, Canvas, Frame, Label
 from tkinter.constants import BOTH, W
-from tkinter.ttk import Frame, Label, LabelFrame, Button
 from test import Test
 from constants import *
 
@@ -23,12 +22,13 @@ class ProgressFrame(Frame):
     :param stutests: tuple containing the tests to be charted
     """
     def __init__(self, master, stutests: tuple):
-        super().__init__(master, height=RESULT_RECTANGLE_MAX_HEIGHT*1.3)
-        self.chartcanvases = [Canvas(self, borderwidth=2, height=RESULT_RECTANGLE_MAX_HEIGHT*1.3, bg='white') for _ in stutests]
+        super().__init__(master, height=RESULT_RECTANGLE_MAX_HEIGHT+30, bg='white')
+        self.chartcanvases = [Canvas(self, borderwidth=None, height=RESULT_RECTANGLE_MAX_HEIGHT+30, bg='white',
+                                     bd=0, relief='ridge', highlightthickness=0) for _ in stutests]
 
         i = 0
         for cvs in self.chartcanvases:
-            Label(self, text=stutests[i].title, font=('helvetica', 14, 'bold')).grid(row=0, column=i, padx=(5,0),
+            Label(self, text=stutests[i].title, bg='white', font=('helvetica', 14, 'bold')).grid(row=0, column=i, padx=(5,0),
                                                                                      pady=(35,0))
             self.draw_chart(cvs, stutests[i])
             cvs.grid(row=1, column=i, padx=(10,0) if i==0 else (60,0))
@@ -80,7 +80,7 @@ class ProgressFrame(Frame):
             rheight = RESULT_RECTANGLE_MAX_HEIGHT-5 # prevent the bar to reach over the top
         tly = bry - rheight
         tlx += 2.5*RECTANGLE_WIDTH
-        canvas.create_rectangle(tlx, tly+PADY, tlx + RECTANGLE_WIDTH, bry, fill='linen')
+        canvas.create_rectangle(tlx, tly+PADY, tlx + RECTANGLE_WIDTH, bry, fill='thistle1')
         bottom_text = f'{stutest.result[1]+stutest.result[2]} CAp'
         canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry+12, text=bottom_text)
         # draw the lines corresponding to the grade criterias that C points enable
@@ -98,7 +98,7 @@ class ProgressFrame(Frame):
             rheight = RESULT_RECTANGLE_MAX_HEIGHT-5 # prevent the bar to reach over the top
         tly = bry - rheight
         tlx += 2.5*RECTANGLE_WIDTH
-        canvas.create_rectangle(tlx, tly+PADY, tlx + RECTANGLE_WIDTH, bry, fill='linen')
+        canvas.create_rectangle(tlx, tly+PADY, tlx + RECTANGLE_WIDTH, bry, fill='DarkSeaGreen1')
         bottom_text = f'{stutest.result[2]} Ap'
         canvas.create_text(tlx+0.5*RECTANGLE_WIDTH, bry+12, text=bottom_text)
         # draw the lines corresponding to the grade criterias that C points enable
