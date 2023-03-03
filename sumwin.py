@@ -331,12 +331,17 @@ class SumWin(object):
 
         if kind == -1:  # nameentry is focused
             self.student_rows[row - 2].nameentry.focus_set()
+            self.student_rows[row - 2].nameentry.select_range(0, tk.END)
         elif kind == 0:  # Eentry is focused
             self.student_rows[row - 2].test_entries[testnr].Eentry.focus_set()
+            self.student_rows[row - 2].test_entries[testnr].Eentry.select_range(0, tk.END)
         elif kind == 1:  # Centry is focused
             self.student_rows[row - 2].test_entries[testnr].Centry.focus_set()
+            self.student_rows[row - 2].test_entries[testnr].Centry.select_range(0, tk.END)
         elif kind == 2:  # Aentry is focused
             self.student_rows[row - 2].test_entries[testnr].Aentry.focus_set()
+            self.student_rows[row - 2].test_entries[testnr].Aentry.select_range(0, tk.END)
+
 
     # row: int is 1-indexed
     def down_keypress(self, w):
@@ -349,12 +354,16 @@ class SumWin(object):
 
         if kind == -1:  # nameentry is focused
             self.student_rows[row].nameentry.focus_set()
+            self.student_rows[row].nameentry.select_range(0, tk.END)
         elif kind == 0:  # Eentry is focused
             self.student_rows[row].test_entries[testnr].Eentry.focus_set()
+            self.student_rows[row].test_entries[testnr].Eentry.select_range(0, tk.END)
         elif kind == 1:  # Centry is focused
             self.student_rows[row].test_entries[testnr].Centry.focus_set()
+            self.student_rows[row].test_entries[testnr].Centry.select_range(0, tk.END)
         elif kind == 2:  # Aentry is focused
             self.student_rows[row].test_entries[testnr].Aentry.focus_set()
+            self.student_rows[row].test_entries[testnr].Aentry.select_range(0, tk.END)
 
     def return_keypress(self, w):
         # select the text in the entry
