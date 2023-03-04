@@ -449,46 +449,51 @@ class SumWin(object):
                     testnr += 1
         return -1, -1, -1
 
-    def index_number_clicked(self, e: tk.Event):
+    def infolabel_clicked(self, e: tk.Event):
         row = 0
         name = ''
+        widget = None
         # find the row that was clicked and get the name of the student
         for sturow in self.student_rows:
-            if e.widget == sturow.label_row:
+            if e.widget == sturow.infolabel or e.widget == sturow.stuchartlabel:
+                widget = e.widget
                 name = sturow.namevar.get()
                 break
             else:
                 row += 1
 
         print(f'clicked index {row + 1} with name {name}')
-        editwin = EditStudentTestsWin(self.win,
-                                           tuple([stest.test for stest in self.student_rows[row].test_entries]),
-                                           self.find_standard_tests(), name)
-        stustatswin = StudentStatWin(self.win, tuple([stest.test for stest in self.student_rows[row].test_entries]),
-                                     name)
-        self.win.wait_window(editwin.win)
-        print(f'editwin: {editwin.pressed} pressed')
 
-        if editwin.pressed == 'cancel':
-            return
-        elif editwin.pressed == 'restore':
-            st_tests = self.find_standard_tests()
+        if widget == self.student_rows[row].infolabel:
+            editwin = EditStudentTestsWin(self.win,
+                                               tuple([stest.test for stest in self.student_rows[row].test_entries]),
+                                               self.find_standard_tests(), name)
+            self.win.wait_window(editwin.win)
+            print(f'editwin: {editwin.pressed} pressed')
+
+            if editwin.pressed == 'cancel':
+                return
+            elif editwin.pressed == 'restore':
+                st_tests = self.find_standard_tests()
+                i = 0
+                for tst in editwin.tests:
+                    tst.gradetemplate = st_tests[i].gradetemplate
+                    tst.standard = True
+                    i += 1
+
             i = 0
-            for tst in editwin.tests:
-                tst.gradetemplate = st_tests[i].gradetemplate
-                tst.standard = True
+            for testentry in self.student_rows[row].test_entries:
+                testentry.test = editwin.tests[i]
+                print(f'{name}s new grade template on test {i + 1}: {testentry.test.gradetemplate}')
+                testentry.update_grade()
+                if not testentry.test.standard:
+                    testentry.gradeentry.config(style='EditedGrade.TEntry')
+                else:
+                    testentry.gradeentry.config(style='Grade.TEntry')
                 i += 1
-
-        i = 0
-        for testentry in self.student_rows[row].test_entries:
-            testentry.test = editwin.tests[i]
-            print(f'{name}s new grade template on test {i + 1}: {testentry.test.gradetemplate}')
-            testentry.update_grade()
-            if not testentry.test.standard:
-                testentry.gradeentry.config(style='EditedGrade.TEntry')
-            else:
-                testentry.gradeentry.config(style='Grade.TEntry')
-            i += 1
+        else:
+            stustatswin = StudentStatWin(self.win, tuple([stest.test for stest in self.student_rows[row].test_entries]),
+                                         name)
 
     def find_standard_tests(self) -> tuple[Test]:
         st_tests = list()

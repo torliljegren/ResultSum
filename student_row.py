@@ -1,6 +1,6 @@
 from student import Student
 from student_test_entry import StudentTestEntry
-from tkinter import StringVar, END
+from tkinter import StringVar, END, PhotoImage
 from tkinter.ttk import Entry, Label
 import focused
 # from sumwin import SumWin
@@ -34,8 +34,15 @@ class StudentRow(object):
         self.var_percentTOT = StringVar(master=self.master)
         self.entry_percentTOT = Entry(master=master, textvariable=self.var_percentTOT, width=4, takefocus=False)
 
-        self.var_row = StringVar(master=self.master, value='[#'+str(self.row-1)+']')
-        self.label_row = Label(master=self.master, textvariable=self.var_row, style='Content.TLabel')
+        # this are replaced by two separate (i) and chart icons
+        # self.var_row = StringVar(master=self.master, value='[#'+str(self.row-1)+']')
+        # self.label_row = Label(master=self.master, textvariable=self.var_row, style='Content.TLabel')
+
+        self.infoimage = PhotoImage(file='info.png', master=self.master)
+        self.infolabel = Label(self.master, image=self.infoimage, style='Content.TLabel')
+
+        self.stuchartimage = PhotoImage(file='stuchart.png', master=self.master)
+        self.stuchartlabel = Label(self.master, image=self.stuchartimage, style='Content.TLabel')
 
     def bind_up_down(self, win: 'sumwin.SumWin'):
         self.nameentry.bind('<Up>', win.up_keypress)
@@ -59,7 +66,8 @@ class StudentRow(object):
             entry.Aentry.bind('<Return>', win.return_keypress)
             entry.Aentry.bind('<Shift-Return>', win.shift_return_keypress)
 
-            self.label_row.bind('<Button-1>', win.index_number_clicked)
+            self.infolabel.bind('<Button-1>', win.infolabel_clicked)
+            self.stuchartlabel.bind('<Button-1>', win.infolabel_clicked)
 
     def nameentry_callback(self, e):
         focused.FOCUSED = str(self.test_entries[0].Eentry)
@@ -137,7 +145,9 @@ class StudentRow(object):
         self.entry_percentC.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 2)
         self.entry_percentA.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 3)
         self.entry_percentTOT.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 4)
-        self.label_row.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 5)
+        # self.label_row.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 5)
+        self.infolabel.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 5)
+        self.stuchartlabel.grid(row=row, column=startcolumn+len(self.test_entries)*5 + 6)
 
 
     def update_model_from_gui(self):
@@ -158,7 +168,10 @@ class StudentRow(object):
         self.entry_percentE.grid_forget()
         self.entry_percentC.grid_forget()
         self.entry_percentA.grid_forget()
-        self.entry_percentTOT.grid()
+        self.entry_percentTOT.grid_forget()
+
+        self.infolabel.grid_forget()
+        self.stuchartlabel.grid_forget()
 
     def clear_entries(self):
         self.namevar.set('')
