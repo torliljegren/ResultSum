@@ -11,6 +11,7 @@ class StudentStatWin(object):
 
     def __init__(self, sumwin, stutests: tuple, stuname: str):
         self.win = Toplevel(sumwin)
+        self.win.geometry('+0+0')
         self.win.title(stuname)
         self.progframe = ProgressFrame(self.win, stutests)
         self.progframe.pack(fill=BOTH)

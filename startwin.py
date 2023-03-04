@@ -174,9 +174,15 @@ class StartWin(Tk):
     def load_press(self):
         fpath = tkinter.filedialog.askopenfilename(filetypes=(('Bedömningsmall', '*.dat'),), parent=self)
         if fpath:
-            SumWin.load_session(win=tkinter.Toplevel(master=self), filepath=fpath, master=self)
-            self.iconify()
-            self.clear_entries()
+            sw = tkinter.Toplevel(master=self)
+            sw.iconify()
+            status = SumWin.load_session(win=sw, filepath=fpath, master=self)
+            if status != -1:
+                sw.deiconify()
+                self.iconify()
+                self.clear_entries()
+            else:
+                sw.destroy()
 
 
     def clear_entries(self):

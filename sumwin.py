@@ -466,7 +466,7 @@ class SumWin(object):
                                            self.find_standard_tests(), name)
         stustatswin = StudentStatWin(self.win, tuple([stest.test for stest in self.student_rows[row].test_entries]),
                                      name)
-        # self.win.wait_window(editwin.win)
+        self.win.wait_window(editwin.win)
         print(f'editwin: {editwin.pressed} pressed')
 
         if editwin.pressed == 'cancel':
@@ -652,6 +652,7 @@ class SumWin(object):
 
     def newstudent(self):
         stests = list()
+        # give the new student the
         for tst in self.students[0].tests:
             stests.append(Test(title=tst.title, max=tst.max, result=(0, 0, 0), grades=tst.gradetemplate))
         self.students.append(Student(name='Ny elev', tests=tuple(stests)))
