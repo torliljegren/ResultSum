@@ -68,14 +68,15 @@ class SumWin(object):
         self.students = list(students) if students is not None else [Student('Elev 1', None),
                                                                      Student('Elev 2', None)]
 
+        self.masterframe = ttk.Frame(self.win, style='Content.TFrame')
+
         btnpad_x = (0, 5)
         btnpad_y = 5
         ibtnpad_y = 0
-        self.topframe = ttk.Frame(self.win)  # style='ButtonFrame.TFrame')
+        self.topframe = ttk.Frame(self.masterframe)  # style='ButtonFrame.TFrame')
         self.topframe['relief'] = 'ridge'
         self.topframe['borderwidth'] = '2'
         # self.topframe.grid(row=0, column=0, pady=0, padx=0, sticky=tk.EW)
-        self.topframe.pack(side=tk.TOP, fill='x', expand=True, anchor='n')
 
         # self.topframe.pack(side='top', expand=True, pady=(0,10))
         self.saveimg = tk.PhotoImage(file='save.png', master=self.win)
@@ -148,21 +149,20 @@ class SumWin(object):
         self.leftimage = tk.PhotoImage(file='left.png', master=self.win)
         self.leftbutton = ttk.Button(master=self.topframe, image=self.leftimage, command=self.cmd_move_test_left)
         self.leftbutton.grid(row=0, column=13, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
-        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+        ToolTip(self.leftbutton, msg='Flytta provet till vänster', delay=0.7)
 
         self.rightimage = tk.PhotoImage(file='right.png', master=self.win)
         self.rightbutton = ttk.Button(master=self.topframe, image=self.rightimage, command=self.cmd_move_test_right)
         self.rightbutton.grid(row=0, column=14, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
-        ToolTip(self.infobutton, msg='Redigera kurs och klass', delay=0.7)
+        ToolTip(self.rightbutton, msg='Flytta provet till höger', delay=0.7)
 
         self.statimage = tk.PhotoImage(file='stat.png', master=self.win)
         self.statbutton = ttk.Button(master=self.topframe, image=self.statimage, command=lambda: StatWin(self))
         self.statbutton.grid(row=0, column=15, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
-        ToolTip(self.infobutton, msg='Visa statistik', delay=0.7)
+        ToolTip(self.statbutton, msg='Visa statistik', delay=0.7)
 
-        self.scrollframe = ScrollableFrame(self.win, hscroll=False, vscroll=True, height=900)#, style='Content.TFrame')
+        self.scrollframe = ScrollableFrame(self.masterframe, hscroll=False, vscroll=True, bg='white')#, style='Content.TFrame')
         # self.scrollframe.grid(row=1, column=0, sticky=tk.NSEW)
-        self.scrollframe.pack(side=tk.TOP, fill='both', expand=True, anchor='n')
         self.contentframe = self.scrollframe
         # self.win.columnconfigure(index=0, pad=0)
         # self.contentframe.config(style='Content.TFrame')
@@ -221,9 +221,16 @@ class SumWin(object):
         # self.run_thread = True
         # perc_thread = t.Thread(target=self.update_perc, daemon=True)
         # perc_thread.start()
+
         self.win.update_idletasks()
         print(f'Height of scrollframe is {self.contentframe.winfo_reqheight()}')
-        self.win.config(height=self.contentframe.winfo_reqheight()+self.topframe.winfo_reqheight())
+        self.contentframe.resize(vscroll.FIT_HEIGHT)
+
+        self.topframe.pack(side=tk.TOP, fill='x', expand=True, anchor='n')
+        self.scrollframe.pack(side=tk.TOP, fill='both', expand=True, anchor='s')
+        self.masterframe.pack(fill='both', expand=True)
+
+
 
         self.win.title(self.generate_window_title())
 
@@ -463,7 +470,7 @@ class SumWin(object):
         row = 0
         name = ''
         widget = None
-        # find the row that was clicked and get the name of the student
+        # find the row that was clicked by id:ing the calling widget and get the name of the student
         for sturow in self.student_rows:
             if e.widget == sturow.infolabel or e.widget == sturow.stuchartlabel:
                 widget = e.widget
@@ -897,11 +904,9 @@ class SumWin(object):
         if self.master is not None:
             print(f'on_close(): destroying {self.generate_window_title()} and opening {self.win}')
             self.win.destroy()
-            self.run_thread = False
             self.master.deiconify()
             self.master.lift()
             self.master.focus_set()
             self.master.entry_subject.focus_set()
         else:
-            self.run_thread = False
             exit(0)

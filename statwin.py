@@ -4,6 +4,8 @@ import tkinter.ttk as ttk
 from constants import *
 
 VALID_GRADES = ('F', 'E', 'D', 'C', 'B', 'A')
+CHART_PADY = (20, 0)
+CHART_PADX = 15
 
 class StatWin(object):
     def __init__(self, sumwin):
@@ -25,13 +27,13 @@ class StatWin(object):
         for i in range(2*nr_of_tests - 1):
             if i%2 != 0:    # place a separator on odd columns
                 ttk.Separator(master=self.mainframe, orient=tk.VERTICAL).grid(row=0, column=i, sticky=tk.NSEW,
-                                                                              rowspan=2, padx=10)
+                                                                              rowspan=2)
                 additional += 1
             else:   # place a title, barchart and stats on even columns
                 cc = tk.Canvas(self.mainframe)
                 self.chartcanvases.append(cc)
                 self.draw_barchart(cc, tuple_of_tests[i-additional], max_num_grades_per_test[i-additional])
-                cc.grid(row=1, column=i)
+                cc.grid(row=1, column=i, pady=CHART_PADY, padx=CHART_PADX)
                 tf = ttk.Frame(self.mainframe)
                 self.titleframes.append(tf)
                 ttk.Label(master=tf, text=self.sumwin.testtitles[i-additional], font=('helvetica', 14, 'bold')).\
