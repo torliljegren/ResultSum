@@ -3,6 +3,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 
 import focused
+import vscroll
 from gradetemplate import GradeTemplate
 from student import Student
 from student_test_entry import StudentTestEntry
@@ -21,6 +22,7 @@ from tkinter.messagebox import showerror, showinfo
 import tkinter.filedialog
 import pyperclip
 from tktooltip import ToolTip
+from vscroll import ScrollableFrame
 
 
 class SumWin(object):
@@ -72,7 +74,8 @@ class SumWin(object):
         self.topframe = ttk.Frame(self.win)  # style='ButtonFrame.TFrame')
         self.topframe['relief'] = 'ridge'
         self.topframe['borderwidth'] = '2'
-        self.topframe.grid(row=0, column=0, pady=0, padx=0, sticky=tk.EW)
+        # self.topframe.grid(row=0, column=0, pady=0, padx=0, sticky=tk.EW)
+        self.topframe.pack(side=tk.TOP, fill='x', expand=True, anchor='n')
 
         # self.topframe.pack(side='top', expand=True, pady=(0,10))
         self.saveimg = tk.PhotoImage(file='save.png', master=self.win)
@@ -157,9 +160,13 @@ class SumWin(object):
         self.statbutton.grid(row=0, column=15, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.infobutton, msg='Visa statistik', delay=0.7)
 
-        self.contentframe = ttk.Frame(self.win, style='Content.TFrame')
-        self.contentframe.grid(row=1, column=0)
-        self.contentframe.columnconfigure(0, weight=1)
+        self.scrollframe = ScrollableFrame(self.win, hscroll=False, vscroll=True, height=900)#, style='Content.TFrame')
+        # self.scrollframe.grid(row=1, column=0, sticky=tk.NSEW)
+        self.scrollframe.pack(side=tk.TOP, fill='both', expand=True, anchor='n')
+        self.contentframe = self.scrollframe
+        # self.win.columnconfigure(index=0, pad=0)
+        # self.contentframe.config(style='Content.TFrame')
+        # self.contentframe.columnconfigure(0, weight=1)
         # self.contentframe.pack(side='bottom', expand=True)
 
         # create the test titles and headings
@@ -214,6 +221,9 @@ class SumWin(object):
         # self.run_thread = True
         # perc_thread = t.Thread(target=self.update_perc, daemon=True)
         # perc_thread.start()
+        self.win.update_idletasks()
+        print(f'Height of scrollframe is {self.contentframe.winfo_reqheight()}')
+        self.win.config(height=self.contentframe.winfo_reqheight()+self.topframe.winfo_reqheight())
 
         self.win.title(self.generate_window_title())
 
