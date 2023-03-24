@@ -51,6 +51,7 @@ class StudentTestEntry(object):
         orgC = str(self.test.result[1])
         orgA = str(self.test.result[2])
 
+        # do some error checking on the entries
         valid = True
         try:
             E = int(self.Evar.get())

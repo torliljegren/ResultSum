@@ -38,10 +38,10 @@ class StudentRow(object):
         # self.var_row = StringVar(master=self.master, value='[#'+str(self.row-1)+']')
         # self.label_row = Label(master=self.master, textvariable=self.var_row, style='Content.TLabel')
 
-        self.infoimage = PhotoImage(file='info.png', master=self.master)
+        self.infoimage = PhotoImage(file='info.png', master=self.master, height=22)
         self.infolabel = Label(self.master, image=self.infoimage, style='Content.TLabel')
 
-        self.stuchartimage = PhotoImage(file='stuchart.png', master=self.master)
+        self.stuchartimage = PhotoImage(file='stuchart.png', master=self.master, height=22)
         self.stuchartlabel = Label(self.master, image=self.stuchartimage, style='Content.TLabel')
 
     def bind_up_down(self, win: 'sumwin.SumWin'):
