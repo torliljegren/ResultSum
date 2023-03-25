@@ -161,7 +161,7 @@ class SumWin(object):
         self.statbutton.grid(row=0, column=15, padx=btnpad_x, pady=btnpad_y, ipady=ibtnpad_y)
         ToolTip(self.statbutton, msg='Visa statistik', delay=0.7)
 
-        self.scrollframe = ScrollableFrame(self.masterframe, hscroll=False, vscroll=True, bg='white')#, style='Content.TFrame')
+        self.scrollframe = ScrollableFrame(self.masterframe, hscroll=False, vscroll=True, style='Content.TFrame')
         # self.scrollframe.grid(row=1, column=0, sticky=tk.NSEW)
         self.contentframe = self.scrollframe
         # self.win.columnconfigure(index=0, pad=0)
@@ -661,7 +661,7 @@ class SumWin(object):
         tsts: list[str] = [tst.title for tst in stus[0].tests]
         tsts.append(f'Prov {len(tsts) + 1}')
         for stu in stus:
-            stu.tests.append(Test(title=tsts[-1], max=(1, 1, 1), result=(0, 0, 0),
+            stu.tests.append(Test(title=tsts[-1], max=(0, 0, 0), result=(0, 0, 0),
                                        grades=GradeTemplate(1, (1, 1), (1, 1), (1, 1), (1, 1))))
         s = SumWin(tuple(tsts), tuple(stus), master=self.master, root=tkinter.Toplevel(self.master), course=self.course,
                    group=self.group)
