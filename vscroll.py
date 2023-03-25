@@ -58,11 +58,7 @@ class ScrollableFrame(ttk.Frame):
             self.dummy_canvas.configure(xscrollcommand=self.h_scrollbar.set)
 
         # Bind to the mousewheel scrolling
-        self.dummy_canvas.bind_all("<MouseWheel>", self.scrolling_windows,
-                                   add=True)
-        self.dummy_canvas.bind_all("<Button-4>", self.scrolling_linux, add=True)
-        self.dummy_canvas.bind_all("<Button-5>", self.scrolling_linux, add=True)
-        self.bind("<Configure>", self.scrollbar_scrolling, add=True)
+        self.bind_scrolling()
 
         # Place `self` inside `dummy_canvas`
         self.dummy_canvas.create_window((0, 0), window=self, anchor="nw")
@@ -120,6 +116,19 @@ class ScrollableFrame(ttk.Frame):
         else:
             raise ValueError("Unknow value for the `fit` parameter.")
     fit = resize
+
+    def bind_scrolling(self):
+        self.dummy_canvas.bind_all("<MouseWheel>", self.scrolling_windows,
+                                   add=True)
+        self.dummy_canvas.bind_all("<Button-4>", self.scrolling_linux, add=True)
+        self.dummy_canvas.bind_all("<Button-5>", self.scrolling_linux, add=True)
+        self.bind("<Configure>", self.scrollbar_scrolling, add=True)
+
+    def remove_mouse_bindings(self):
+        self.dummy_canvas.unbind_all("<MouseWheel>")
+        self.dummy_canvas.unbind_all("<Button-4>")
+        self.dummy_canvas.unbind_all("<Button-5>")
+        self.unbind("<Configure>")
 
 
 # Example 1

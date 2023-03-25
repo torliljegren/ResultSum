@@ -667,7 +667,9 @@ class SumWin(object):
                    group=self.group)
         s.filepath = self.filepath
         s.update_window_title()
+        self.contentframe.remove_mouse_bindings()
         self.win.destroy()
+        s.contentframe.bind_scrolling()
 
     def removetest(self):
         stus = self.students
