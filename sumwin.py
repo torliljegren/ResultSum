@@ -60,7 +60,7 @@ class SumWin(object):
             s.configure('Content.TLabel', background='white', font=(None, 10, 'bold'))
             s.configure('TestHeading.TLabel', background='white', font=(None, 12, 'bold'))
         else:
-            s.configure('Content.TLabel', font=(None, 14, 'bold'))
+            s.configure('Content.TLabel', font=(None, 14, 'bold'), background='white')
             s.configure('TestHeading.TLabel', background='white', font=(None, 15, 'bold'))
             s.configure('Grade.TEntry', font=(None, 12, 'bold'), background='linen')
             s.configure('EditedGrade.TEntry', font=(None, 12, 'bold'), background='light goldenrod')
@@ -224,13 +224,21 @@ class SumWin(object):
 
         self.win.update_idletasks()
         print(f'Height of scrollframe is {self.contentframe.winfo_reqheight()}')
-        self.contentframe.resize(vscroll.FIT_HEIGHT)
 
-        self.topframe.pack(side=tk.TOP, fill='x', expand=True, anchor='n')
-        self.scrollframe.pack(side=tk.TOP, fill='both', expand=True, anchor='s')
-        self.masterframe.pack(fill='both', expand=True)
+        # for some unknown reason, these methods kills the window on MacOS, fix size instead under MacOS below
+        if platform.system() != 'Darwin':
+            self.contentframe.resize(vscroll.FIT_HEIGHT)
+            self.contentframe.resize(vscroll.FIT_WIDTH)
 
+        self.topframe.pack(side=tk.TOP, fill='x', expand=False, anchor='n')
+        self.scrollframe.pack(side=tk.TOP, fill='both', expand=True, anchor='n', pady=0)
+        self.masterframe.pack(fill='y', expand=True, anchor='n')
 
+        # fix window size for MacOS
+        if platform.system() == 'Darwin':
+            w = self.scrollframe.winfo_reqwidth()+20
+            h = self.scrollframe.winfo_reqheight()+50
+            self.win.geometry('%sx%s' % (w,h))
 
         self.win.title(self.generate_window_title())
 
