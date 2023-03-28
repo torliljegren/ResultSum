@@ -3,6 +3,7 @@ from student_test_entry import StudentTestEntry
 from tkinter import StringVar, END, PhotoImage
 from tkinter.ttk import Entry, Label
 import focused
+import sumwin
 # from sumwin import SumWin
 
 class StudentRow(object):

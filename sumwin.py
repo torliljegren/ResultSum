@@ -223,12 +223,31 @@ class SumWin(object):
         # perc_thread.start()
 
         self.win.update_idletasks()
-        print(f'Height of scrollframe is {self.contentframe.winfo_reqheight()}')
+        frameheight = self.contentframe.winfo_reqheight()
+        print(f'Height of scrollframe is {frameheight}')
 
         # for some unknown reason, these methods kills the window on MacOS, fix size instead under MacOS below
         if platform.system() != 'Darwin':
-            self.contentframe.resize(vscroll.FIT_HEIGHT)
             self.contentframe.resize(vscroll.FIT_WIDTH)
+
+            screenheight = self.win.winfo_screenheight()
+            if screenheight < frameheight:
+                self.contentframe.resize(height=round(screenheight*0.85), fit=vscroll.FIT_WIDTH)
+
+        # center the window
+        # avoid unwanted "flashing" by making window transparent until fully ready
+        self.win.update_idletasks()
+        w = self.win.winfo_reqwidth()
+        h = self.win.winfo_reqheight()
+        ws = self.win.winfo_screenwidth()
+        hs = self.win.winfo_screenheight()
+        x = (ws / 2) - (w / 2)
+        y = (hs / 6) #- (h / 2)
+        self.win.geometry('+%d+%d' % (x, y))
+        self.win.attributes('-alpha', 1)
+        self.win.deiconify()
+
+
 
         self.topframe.pack(side=tk.TOP, fill='x', expand=False, anchor='n')
         self.scrollframe.pack(side=tk.TOP, fill='both', expand=True, anchor='n', pady=0)

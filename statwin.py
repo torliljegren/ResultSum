@@ -30,23 +30,23 @@ class StatWin(object):
                                                                               rowspan=2)
                 additional += 1
             else:   # place a title, barchart and stats on even columns
-                cc = tk.Canvas(self.mainframe)
-                self.chartcanvases.append(cc)
-                self.draw_barchart(cc, tuple_of_tests[i-additional], max_num_grades_per_test[i-additional])
-                cc.grid(row=1, column=i, pady=CHART_PADY, padx=CHART_PADX)
-                tf = ttk.Frame(self.mainframe)
-                self.titleframes.append(tf)
-                ttk.Label(master=tf, text=self.sumwin.testtitles[i-additional], font=('helvetica', 14, 'bold')).\
-                    grid(row=0, column=0,pady=(15,0))
-                tf.grid(row=0, column=i)
+                chartcanvas = tk.Canvas(self.mainframe)
+                self.chartcanvases.append(chartcanvas)
+                self.draw_barchart(chartcanvas, tuple_of_tests[i-additional], max_num_grades_per_test[i-additional])
+                chartcanvas.grid(row=1, column=i, pady=CHART_PADY, padx=CHART_PADX)
+                titleframe = ttk.Frame(self.mainframe)
+                self.titleframes.append(titleframe)
+                ttk.Label(master=titleframe, text=self.sumwin.testtitles[i-additional], font=('helvetica', 14, 'bold')).\
+                    grid(row=0, column=0, pady=(15,0))
+                titleframe.grid(row=0, column=i)
                 mean, std_dev = self.one_var_stats(tuple_of_tests[i-additional])
-                ttk.Label(master=tf, text='Medelvärde: '+str(round(mean, 1))).grid(row=1, column=0)
-                ttk.Label(master=tf, text='Stdavvikelse: '+str(round(std_dev, 1))).grid(row=2, column=0)
+                ttk.Label(master=titleframe, text='Medelvärde: '+str(round(mean, 1))).grid(row=1, column=0)
+                ttk.Label(master=titleframe, text='Stdavvikelse: '+str(round(std_dev, 1))).grid(row=2, column=0)
                 framewidth = len(GRADE_COLORS)*RECTANGLE_WIDTH
 
 
-                cc.configure(width=framewidth)
-                tf.configure(width=framewidth)
+                chartcanvas.configure(width=framewidth)
+                titleframe.configure(width=framewidth)
 
     def draw_barchart(self, chartcanvas: tk.Canvas, stats: dict, maxnum: int):
         # num_individual_grades = sum(stats.values())

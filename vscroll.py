@@ -103,6 +103,7 @@ class ScrollableFrame(ttk.Frame):
             ALWAYS_FIT_WIDTH
             ALWAYS_FIT_HEIGHT
         """
+        print(f'vscroll: fit={fit}, height={height}, width={width}')
         if height is not None:
             self.dummy_canvas.config(height=height)
         if width is not None:
