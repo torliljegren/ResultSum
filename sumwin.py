@@ -233,6 +233,8 @@ class SumWin(object):
             screenheight = self.win.winfo_screenheight()
             if screenheight < frameheight:
                 self.contentframe.resize(height=round(screenheight*0.85), fit=vscroll.FIT_WIDTH)
+            else:
+                self.contentframe.resize(vscroll.FIT_HEIGHT)
 
         # center the window
         # avoid unwanted "flashing" by making window transparent until fully ready
