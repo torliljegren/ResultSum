@@ -8,7 +8,13 @@ CHART_PADY = (20, 0)
 CHART_PADX = 15
 
 class StatWin(object):
+    """
+    Creates a window that displays grade stats of the students tests in a SumWin.
+    """
     def __init__(self, sumwin):
+        """
+        :param sumwin: A SumWin object from which grade stats are read.
+        """
         self.sumwin = sumwin
         self.win = tk.Toplevel(master=self.sumwin.win)
         self.win.title('Betygsstatistik')
@@ -49,6 +55,14 @@ class StatWin(object):
                 titleframe.configure(width=framewidth)
 
     def draw_barchart(self, chartcanvas: tk.Canvas, stats: dict, maxnum: int):
+        """
+        Draws barcharts on chartcanvas
+        :param chartcanvas: where to paint the bar charts
+        :param stats: a dict where the keys are the grades F-A and - are keys and the number of each grade are values.
+        :param maxnum: the number of grades of the most common grade, f.i. if C is most common, maxnum is the number
+        of given C grades.
+        :return: None
+        """
         # num_individual_grades = sum(stats.values())
         print('Drawing barchart for:', stats)
 
@@ -61,10 +75,14 @@ class StatWin(object):
                                      text=('Ej' if grade=='-' else grade)+':'+str(stats[grade]))
             startx += RECTANGLE_WIDTH
 
-    """
-    returns a tuple on the format (mean, stddev)
-    """
+
     def one_var_stats(self, stats: dict) -> tuple:
+        """
+        Returns a tuple on the format (mean, stddev)
+        :param stats: A dict with grades F-A and - as keys and the number of each grades as values.
+        :returns: A tuple of two floats, (mean, stddev)
+        """
+
         # calculate the mean via the sum of all points of the grades
         point_sum = 0
         grade_sum = 0
@@ -87,8 +105,12 @@ class StatWin(object):
 
     # returns a tuple of dicts with the number of each grade in each test, and an empty tuple if no tests are defined
     # tuple structure:
-    # ( {'invalid':int, 'E':int, 'D':int...}, {...} ... ) i.e. a dict for each test
+    # (
     def grade_tuple(self) -> tuple:
+        """
+        :return: a tuple of dicts with the number of each grade in each test, and an empty tuple if no tests are defined
+        Tuple structure = {'invalid':int, 'E':int, 'D':int...}, {...} ... ) i.e. a dict for each test
+        """
         # tuple of dicts which hold the number of each grade
         nr_of_tests = len(self.sumwin.student_rows[0].test_entries)
         stats = [{'-':0,

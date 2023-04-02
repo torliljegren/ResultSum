@@ -28,10 +28,22 @@ from vscroll import ScrollableFrame
 class SumWin(object):
     def __init__(self, testtitles: tuple[str] = ('Prov 1', 'Prov 2', 'NP'), students: tuple[Student] = None,
                  root=None, filepath=None, master=None, group: str = '', course: str = ''):
+        """
+        Open a SumWin that displays student test results.
+        :param testtitles: a stuple of strings containing the titles of the tests
+        :param students: a tuple of Student objects
+        :param root: a window (Tk or Toplevel) where the widgets are put
+        :param filepath: if the Students are taken from a saved file, this is a reference to that file and save commands
+        will write to it. If left to None, save will prompt a FileChooseDialog.
+        :param master: the Tk or Toplevel that opened this
+        :param group: a string with the name of the teaching group
+        :param course: a string with the name of the course
+        """
         if root:
             self.win = root
         else:
             self.win = tk.Tk()
+            self.win.iconify()
 
         self.testtitles = testtitles
 
@@ -234,20 +246,9 @@ class SumWin(object):
             if screenheight < frameheight:
                 self.contentframe.resize(height=round(screenheight*0.85), fit=vscroll.FIT_WIDTH)
             else:
-                self.contentframe.resize(vscroll.FIT_HEIGHT)
+                self.contentframe.resize(fit=vscroll.FIT_HEIGHT)
 
-        # center the window
-        # avoid unwanted "flashing" by making window transparent until fully ready
-        self.win.update_idletasks()
-        w = self.win.winfo_reqwidth()
-        h = self.win.winfo_reqheight()
-        ws = self.win.winfo_screenwidth()
-        hs = self.win.winfo_screenheight()
-        x = (ws / 2) - (w / 2)
-        y = (hs / 6) #- (h / 2)
-        self.win.geometry('+%d+%d' % (x, y))
-        self.win.attributes('-alpha', 1)
-        self.win.deiconify()
+
 
 
 
@@ -263,7 +264,24 @@ class SumWin(object):
 
         self.win.title(self.generate_window_title())
 
+        # center the window
+        # avoid unwanted "flashing" by making window transparent until fully ready
+        self.win.update_idletasks()
+        w = self.win.winfo_reqwidth()
+        h = self.win.winfo_reqheight()
+        ws = self.win.winfo_screenwidth()
+        hs = self.win.winfo_screenheight()
+        x = (ws / 2) - (w / 2)
+        y = 0#(hs / 6) #- (h / 2)
+        self.win.geometry('+%d+%d' % (x, y))
+        self.win.attributes('-alpha', 1)
+        self.win.deiconify()
+
     def generate_window_title(self) -> str:
+        """
+        Makes a window title from the filename, course and group.
+        :return: the window title
+        """
         # name = str()
         if not self.filepath:
             name = 'Nytt dokument.dat'
@@ -277,9 +295,19 @@ class SumWin(object):
         return f'{self.course} ({self.group}) | {name}' if self.course and self.group else name
 
     def update_window_title(self):
+        """
+        Updates the window title to Course (Group) | Filename
+        :return:
+        """
         self.win.title(self.generate_window_title())
 
     def heading_click_callback(self, e, widget):
+        """
+        Callback from a test heading that was right clicked on
+        :param e: the event from tk
+        :param widget: a reference to the calling widget
+        :return: None
+        """
         # find out which test was clicked
         i = 0
         for heading in self.headingslabels:
@@ -472,7 +500,7 @@ class SumWin(object):
         """
         Get the index of the focused row. Observe that the index is 1-indexed.
         :param n: the name of the widget in Tk:s naming
-        :return: 1-indexed row number that is in focus
+        :returns: 1-indexed row number that is in focus
         """
         # print(w.widget, 'is in focus')
         index = -1

@@ -145,10 +145,14 @@ class EditTestWin(object):
         except ValueError:
             Amax = -1
 
+        eca_max = Emax + Cmax + Amax
+
         Etot = 0
         try:
             Etot = int(self.Etotvar.get())
         except ValueError:
+            Etot = -1
+        if Etot > Emax:
             Etot = -1
 
         Dtot = 0
@@ -199,29 +203,29 @@ class EditTestWin(object):
         except ValueError:
             AA = -1
 
-        if Emax == -1:
+        if Emax < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för max E-poäng.')
-        elif Cmax == -1:
+        elif Cmax < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för max C-poäng.')
-        elif Amax == -1:
+        elif Amax < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för max A-poäng.')
-        elif Etot == -1:
+        elif Etot < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för E-poäng för betyget E.')
-        elif Dtot == -1:
+        elif Dtot < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för totalpoäng för betyget D.')
-        elif DC == -1:
+        elif DC < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för C/A-poäng för betyget D.')
-        elif Ctot == -1:
+        elif Ctot < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för totalpoäng för betyget C.')
-        elif CC == -1:
+        elif CC < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för C/A-poäng för betyget C.')
-        elif Btot == -1:
+        elif Btot < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för totalpoäng för betyget B.')
-        elif BA == -1:
+        elif BA < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för A-poäng för betyget B.')
-        elif Atot == -1:
+        elif Atot < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för totalpoäng för betyget A.')
-        elif AA == -1:
+        elif AA < 0:
             showerror('Fel', 'Felaktig inmatning i rutan för A-poäng för betyget A.')
         elif self.titlevar.get() == '':
             showerror('Fel', 'Fältet för provtitel är tom. Ange en provtitel.')
