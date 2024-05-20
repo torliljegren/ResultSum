@@ -747,6 +747,10 @@ class SumWin(object):
         # write the names to the textarea
         namelist_2.sort()
         for i in range(len(namelist_2)):
+            if i >= len(self.student_rows):
+                m = f'Det fanns inte tillräckligt med elevrader. {len(namelist_2)-len(self.student_rows)} saknas i den här filen. Skapa nya med knappen i verktygsfältet.'
+                tk.messagebox.showwarning('Platsbrist', m)
+                break
             self.student_rows[i].namevar.set(namelist_2[i])
 
     def save_session(self, fpath):
