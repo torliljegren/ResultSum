@@ -6,6 +6,8 @@ class Test(object):
     def __init__(self, title: str, max: tuple[int, int, int], result: tuple[int, int, int], grades: GradeTemplate,
                  active=True, standard=True):
         self.active:bool = active
+
+        # is the grade template the standard one?
         self.standard:bool = standard
         self.title:str = title
         self.max:tuple[int, int, int] = max

@@ -70,7 +70,7 @@ class EditTestWin(object):
 
         ttk.Label(self.middleframe, text='D-gräns', style='Heading.TLabel').grid(row=4, column=0)
         ttk.Label(self.middleframe, text='Poäng').grid(row=4, column=1)
-        ttk.Label(self.middleframe, text='C/A-Poäng').grid(row=4, column=2)
+        ttk.Label(self.middleframe, text='varav C/A-Poäng').grid(row=4, column=2, columnspan=2)
         # create Stringvars and entries
         self.Dtotvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.D[0]))
         self.DCvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.D[1]))
@@ -81,7 +81,7 @@ class EditTestWin(object):
 
         ttk.Label(self.middleframe, text='C-gräns', style='Heading.TLabel').grid(row=6, column=0)
         ttk.Label(self.middleframe, text='Poäng').grid(row=6, column=1)
-        ttk.Label(self.middleframe, text='C/A-Poäng').grid(row=6, column=2)
+        ttk.Label(self.middleframe, text='varav C/A-Poäng').grid(row=6, column=2, columnspan=2)
         # create Stringvars and entries
         self.Ctotvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.C[0]))
         self.CCvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.C[1]))
@@ -90,9 +90,9 @@ class EditTestWin(object):
         self.Ctotentry.grid(row=7, column=1, pady=(0, yp))
         self.CCentry.grid(row=7, column=2, pady=(0, yp))
 
-        ttk.Label(self.middleframe, text='B-gräns', style='Heading.TLabel').grid(row=8, column=0)
+        ttk.Label(self.middleframe, text='B-gräns', style='Heading.TLabel').grid(row=8, column=0, columnspan=2)
         ttk.Label(self.middleframe, text='Poäng').grid(row=8, column=1)
-        ttk.Label(self.middleframe, text='A-Poäng').grid(row=8, column=2)
+        ttk.Label(self.middleframe, text='varav A-Poäng').grid(row=8, column=2, columnspan=2)
         # create Stringvars and entries
         self.Btotvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.B[0]))
         self.BAvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.B[1]))
@@ -103,7 +103,7 @@ class EditTestWin(object):
 
         ttk.Label(self.middleframe, text='A-gräns', style='Heading.TLabel').grid(row=10, column=0)
         ttk.Label(self.middleframe, text='Poäng').grid(row=10, column=1)
-        ttk.Label(self.middleframe, text='A-Poäng').grid(row=10, column=2)
+        ttk.Label(self.middleframe, text='varav A-Poäng').grid(row=10, column=2, columnspan=2)
         # create Stringvars and entries
         self.Atotvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.A[0]))
         self.AAvar = tk.StringVar(self.topframe, value=str(test.gradetemplate.A[1]))
