@@ -16,7 +16,7 @@ class GradeTemplate(object):
         tempB = (self.B[0], self.B[1])
         tempA = (self.A[0], self.A[1])
 
-        return GradeTemplate(tempE, tempD, tempC, tempB, tempA)
+        return GradeTemplate(tempE, tempD, tempC, tempB, tempA, self.comment)
 
     def empty(self) -> bool:
         return self.E<1 and sum(self.D)<1 and sum(self.C)<1 and sum(self.B)<1 and sum(self.A)<1
